@@ -25,6 +25,10 @@
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     
+    /* Ocultar scrollbar no menu mobile */
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    
     .fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
@@ -34,24 +38,24 @@
     .step-content { display: none; }
     .step-content.active { display: block; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 
-    /* Estilos Premium Inputs */
+    /* Estilos Premium Inputs - Borda mais escura e visível */
     .input-premium {
-      @apply w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#002f6c]/20 focus:border-[#002f6c] outline-none transition-all duration-200;
+      @apply w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl text-slate-800 placeholder-slate-400 focus:bg-white focus:ring-4 focus:ring-[#002f6c]/10 focus:border-[#002f6c] outline-none transition-all duration-200 shadow-sm;
     }
   </style>
 </head>
 <body class="text-slate-800 antialiased h-screen flex flex-col md:flex-row overflow-hidden selection:bg-[#1fa33a] selection:text-white">
 
   <!-- Sidebar / Navegação -->
-  <aside class="w-full md:w-80 bg-white border-r border-slate-200 flex flex-col shrink-0 h-auto md:h-full z-10 shadow-lg md:shadow-none relative">
+  <aside class="w-full md:w-80 bg-white border-b md:border-r border-slate-200 flex flex-col shrink-0 z-20 shadow-sm relative">
     
     <!-- Branding / Logo -->
-    <div class="p-6 border-b border-slate-100 flex flex-col items-center justify-center bg-white relative overflow-hidden">
-      <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#002f6c]/5 to-transparent pointer-events-none"></div>
+    <div class="p-4 md:p-6 border-b border-slate-100 flex flex-row md:flex-col items-center justify-between md:justify-center bg-white relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#002f6c]/5 to-transparent pointer-events-none hidden md:block"></div>
       
-      <div class="flex items-center gap-3 z-10 w-full">
+      <div class="flex items-center gap-3 z-10 w-auto md:w-full">
         <!-- Logo em SVG -->
-        <div class="relative w-12 h-12 flex-shrink-0">
+        <div class="relative w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
           <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-sm">
             <path d="M 45 10 A 40 40 0 1 0 85 55" fill="none" stroke="#002f6c" stroke-width="8" stroke-linecap="round"/>
             <rect x="35" y="20" width="32" height="42" rx="4" fill="none" stroke="#002f6c" stroke-width="6"/>
@@ -65,17 +69,17 @@
         </div>
         <!-- Logo Text -->
         <div class="flex flex-col">
-          <span class="text-[#002f6c] font-black text-2xl leading-none tracking-tight">Currículo</span>
-          <span class="text-[#1fa33a] font-bold text-xl leading-none tracking-tight mt-0.5">Expert</span>
+          <span class="text-[#002f6c] font-black text-xl md:text-2xl leading-none tracking-tight">Currículo</span>
+          <span class="text-[#1fa33a] font-bold text-lg md:text-xl leading-none tracking-tight mt-0.5">Expert</span>
         </div>
       </div>
-      <div class="w-full mt-3 flex">
+      <div class="hidden md:flex w-full mt-3">
         <span class="text-[10px] uppercase font-bold tracking-widest text-[#002f6c] bg-[#002f6c]/10 px-2 py-1 rounded w-max">Gupy Ready</span>
       </div>
     </div>
 
-    <!-- Progresso -->
-    <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+    <!-- Progresso (Apenas Desktop) -->
+    <div class="hidden md:block px-6 py-4 border-b border-slate-100 bg-slate-50/50">
       <div class="flex justify-between items-center mb-2">
         <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Progresso</span>
         <span class="text-xs font-bold text-[#1fa33a]" id="progText">0%</span>
@@ -87,13 +91,13 @@
       </div>
     </div>
 
-    <!-- Menu de Etapas -->
-    <nav class="flex-1 overflow-y-auto p-4 space-y-1.5" id="navMenu">
+    <!-- Menu de Etapas (Horizontal no Mobile, Vertical no Desktop) -->
+    <nav class="flex-none md:flex-1 overflow-x-auto md:overflow-y-auto p-3 md:p-4 flex flex-row md:flex-col gap-2 md:gap-1.5 scrollbar-hide bg-slate-50 md:bg-transparent border-b md:border-b-0 border-slate-200" id="navMenu">
       <!-- Gerado via JS -->
     </nav>
 
-    <!-- Apoio Mercado Pago -->
-    <div class="p-4 mt-auto border-t border-slate-100 bg-white">
+    <!-- Apoio Mercado Pago (Apenas Desktop para poupar espaço) -->
+    <div class="hidden md:block p-4 mt-auto border-t border-slate-100 bg-white">
       <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-center shadow-sm relative overflow-hidden">
         <div class="absolute -right-4 -top-4 text-[#1fa33a]/10">
           <i data-lucide="heart" class="w-16 h-16 fill-current"></i>
@@ -113,16 +117,16 @@
     <div class="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#002f6c 1px, transparent 1px); background-size: 24px 24px;"></div>
 
     <!-- Header da Etapa -->
-    <header class="bg-white/80 backdrop-blur-md px-8 py-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between shrink-0 gap-4 z-10">
+    <header class="bg-white/80 backdrop-blur-md px-6 py-4 md:px-8 md:py-5 border-b border-slate-200 flex flex-row items-center justify-between shrink-0 gap-4 z-10">
       <div>
-        <h2 class="text-2xl font-bold text-[#002f6c]" id="stepTitle">Título</h2>
-        <p class="text-sm font-medium text-slate-500 mt-1" id="stepSub">Subtítulo</p>
+        <h2 class="text-xl md:text-2xl font-bold text-[#002f6c]" id="stepTitle">Título</h2>
+        <p class="text-xs md:text-sm font-medium text-slate-500 mt-0.5 md:mt-1 hidden sm:block" id="stepSub">Subtítulo</p>
       </div>
-      <div class="flex items-center gap-3">
-        <button onclick="prevStep()" id="btnPrev" class="hidden px-5 py-2.5 text-sm font-semibold text-slate-600 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 hover:text-[#002f6c] transition-all focus:ring-2 focus:ring-slate-200 outline-none shadow-sm">
+      <div class="flex items-center gap-2 md:gap-3">
+        <button onclick="prevStep()" id="btnPrev" class="hidden px-4 py-2 md:px-5 md:py-2.5 text-sm font-semibold text-slate-600 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 hover:text-[#002f6c] transition-all focus:ring-2 focus:ring-slate-200 outline-none shadow-sm">
           Voltar
         </button>
-        <button onclick="nextStep()" id="btnNext" class="px-6 py-2.5 text-sm font-semibold text-white bg-[#1fa33a] rounded-xl hover:bg-[#1a8c31] transition-all shadow-md hover:shadow-lg focus:ring-2 focus:ring-[#1fa33a] focus:ring-offset-2 outline-none flex items-center gap-2">
+        <button onclick="nextStep()" id="btnNext" class="px-5 py-2 md:px-6 md:py-2.5 text-sm font-semibold text-white bg-[#1fa33a] rounded-xl hover:bg-[#1a8c31] transition-all shadow-md hover:shadow-lg focus:ring-2 focus:ring-[#1fa33a] focus:ring-offset-2 outline-none flex items-center gap-2">
           Próximo <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </button>
       </div>
@@ -134,7 +138,7 @@
 
         <!-- ETAPA 0: Dados Pessoais -->
         <div class="step-content active" id="step0">
-          <div class="bg-blue-50 border border-blue-100 rounded-2xl p-5 mb-8 text-sm flex gap-4 shadow-sm items-start">
+          <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4 md:p-5 mb-6 md:mb-8 text-sm flex gap-4 shadow-sm items-start">
             <div class="p-2 bg-blue-100 text-blue-700 rounded-lg shrink-0">
               <i data-lucide="info" class="w-5 h-5"></i>
             </div>
@@ -144,30 +148,30 @@
             </div>
           </div>
           
-          <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-8 space-y-6">
+          <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 md:p-8 space-y-6">
             <div class="grid grid-cols-1 gap-6">
               <div>
-                <label class="block text-sm font-semibold text-slate-700 mb-2">Nome Completo <span class="text-red-500">*</span></label>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Nome Completo <span class="text-red-500">*</span></label>
                 <input type="text" id="f_nome" oninput="updateProgress()" class="input-premium" placeholder="Ex: Maria da Silva">
               </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label class="block text-sm font-semibold text-slate-700 mb-2">E-mail Profissional <span class="text-red-500">*</span></label>
+                <label class="block text-sm font-bold text-slate-700 mb-2">E-mail Profissional <span class="text-red-500">*</span></label>
                 <input type="email" id="f_email" oninput="updateProgress()" class="input-premium" placeholder="maria.silva@email.com">
               </div>
               <div>
-                <label class="block text-sm font-semibold text-slate-700 mb-2">Celular / WhatsApp <span class="text-red-500">*</span></label>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Celular / WhatsApp <span class="text-red-500">*</span></label>
                 <input type="tel" id="f_tel" oninput="updateProgress()" class="input-premium" placeholder="(11) 99999-9999">
               </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div class="md:col-span-2">
-                <label class="block text-sm font-semibold text-slate-700 mb-2">Cidade e Estado <span class="text-red-500">*</span></label>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Cidade e Estado <span class="text-red-500">*</span></label>
                 <input type="text" id="f_cidade" oninput="updateProgress()" class="input-premium" placeholder="Ex: São Paulo, SP">
               </div>
               <div>
-                <label class="block text-sm font-semibold text-slate-700 mb-2">Idade <span class="text-slate-400 font-normal text-xs">(Opcional)</span></label>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Idade <span class="text-slate-400 font-normal text-xs">(Opcional)</span></label>
                 <input type="text" id="f_idade" oninput="updateProgress()" class="input-premium" placeholder="Ex: 25 anos">
               </div>
             </div>
@@ -176,7 +180,7 @@
 
         <!-- ETAPA 1: Resumo Profissional -->
         <div class="step-content" id="step1">
-          <div class="bg-[#1fa33a]/10 border border-[#1fa33a]/20 rounded-2xl p-5 mb-8 text-sm flex gap-4 shadow-sm items-start">
+          <div class="bg-[#1fa33a]/10 border border-[#1fa33a]/20 rounded-2xl p-4 md:p-5 mb-6 md:mb-8 text-sm flex gap-4 shadow-sm items-start">
             <div class="p-2 bg-white text-[#1fa33a] rounded-lg shrink-0 shadow-sm border border-[#1fa33a]/10">
               <i data-lucide="target" class="w-5 h-5"></i>
             </div>
@@ -186,9 +190,9 @@
             </div>
           </div>
           
-          <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-8">
-            <label class="block text-sm font-semibold text-slate-700 mb-3">Resumo / Objetivo Profissional <span class="text-red-500">*</span></label>
-            <textarea id="f_resumo" rows="6" oninput="updateProgress()" class="input-premium text-sm leading-relaxed" placeholder="Ex: Profissional com 5 anos de experiência focada em análise de métricas e atendimento estratégico. Busco posições como Analista Pleno para impulsionar a aquisição de clientes utilizando estratégias de dados."></textarea>
+          <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 md:p-8">
+            <label class="block text-sm font-bold text-slate-700 mb-3">Resumo / Objetivo Profissional <span class="text-red-500">*</span></label>
+            <textarea id="f_resumo" rows="6" oninput="updateProgress()" class="input-premium min-h-[150px] resize-y text-sm leading-relaxed" placeholder="Ex: Profissional com 5 anos de experiência focada em análise de métricas e atendimento estratégico. Busco posições como Analista Pleno para impulsionar a aquisição de clientes utilizando estratégias de dados."></textarea>
             <div class="flex items-center gap-2 mt-3 text-xs text-slate-500 font-medium">
               <i data-lucide="lightbulb" class="w-4 h-4 text-amber-500"></i>
               Dica: Mencione o cargo que deseja ocupar e 3 a 5 habilidades chaves.
@@ -198,7 +202,7 @@
 
         <!-- ETAPA 2: Experiência Profissional -->
         <div class="step-content" id="step2">
-          <div class="bg-amber-50 border border-amber-100 rounded-2xl p-5 mb-8 text-sm flex gap-4 shadow-sm items-start">
+          <div class="bg-amber-50 border border-amber-100 rounded-2xl p-4 md:p-5 mb-6 md:mb-8 text-sm flex gap-4 shadow-sm items-start">
             <div class="p-2 bg-amber-100 text-amber-700 rounded-lg shrink-0">
               <i data-lucide="clock" class="w-5 h-5"></i>
             </div>
@@ -217,7 +221,7 @@
 
         <!-- ETAPA 3: Formação Acadêmica -->
         <div class="step-content" id="step3">
-          <div class="bg-blue-50 border border-blue-100 rounded-2xl p-5 mb-8 text-sm flex gap-4 shadow-sm items-start">
+          <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4 md:p-5 mb-6 md:mb-8 text-sm flex gap-4 shadow-sm items-start">
             <div class="p-2 bg-blue-100 text-blue-700 rounded-lg shrink-0">
               <i data-lucide="graduation-cap" class="w-5 h-5"></i>
             </div>
@@ -236,7 +240,7 @@
 
         <!-- ETAPA 4: Idiomas & Cursos -->
         <div class="step-content" id="step4">
-          <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-8 mb-8">
+          <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 md:p-8 mb-6 md:mb-8">
             <div class="flex items-center gap-3 mb-6">
               <div class="p-2 bg-slate-100 text-slate-700 rounded-lg shrink-0">
                 <i data-lucide="languages" class="w-5 h-5"></i>
@@ -244,12 +248,12 @@
               <h3 class="text-xl font-bold text-[#002f6c]">Idiomas</h3>
             </div>
             <div id="list_lang" class="space-y-3 mb-4"></div>
-            <button onclick="openModal('lang')" class="w-full border-2 border-dashed border-slate-200 rounded-xl p-4 text-slate-600 text-sm font-semibold hover:border-[#1fa33a] hover:text-[#1fa33a] hover:bg-[#1fa33a]/5 transition-all flex items-center justify-center gap-2">
+            <button onclick="openModal('lang')" class="w-full border-2 border-dashed border-slate-300 rounded-xl p-4 text-slate-600 text-sm font-semibold hover:border-[#1fa33a] hover:text-[#1fa33a] hover:bg-[#1fa33a]/5 transition-all flex items-center justify-center gap-2">
               <i data-lucide="plus" class="w-4 h-4"></i> Adicionar Idioma
             </button>
           </div>
 
-          <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-8">
+          <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 md:p-8">
             <div class="flex items-start gap-3 mb-2">
               <div class="p-2 bg-slate-100 text-slate-700 rounded-lg shrink-0">
                 <i data-lucide="award" class="w-5 h-5"></i>
@@ -261,7 +265,7 @@
             </div>
             <div class="mt-6">
               <div id="list_courses" class="space-y-3 mb-4"></div>
-              <button onclick="openModal('course')" class="w-full border-2 border-dashed border-slate-200 rounded-xl p-4 text-slate-600 text-sm font-semibold hover:border-[#1fa33a] hover:text-[#1fa33a] hover:bg-[#1fa33a]/5 transition-all flex items-center justify-center gap-2">
+              <button onclick="openModal('course')" class="w-full border-2 border-dashed border-slate-300 rounded-xl p-4 text-slate-600 text-sm font-semibold hover:border-[#1fa33a] hover:text-[#1fa33a] hover:bg-[#1fa33a]/5 transition-all flex items-center justify-center gap-2">
                 <i data-lucide="plus" class="w-4 h-4"></i> Adicionar Curso
               </button>
             </div>
@@ -277,7 +281,7 @@
                 <i data-lucide="check-square" class="w-5 h-5 text-[#1fa33a]"></i>
                 Checklist Gaia
               </h3>
-              <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6">
+              <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6">
                 <ul class="space-y-4" id="checklist">
                   <!-- Gerado por JS -->
                 </ul>
@@ -290,7 +294,7 @@
                 <i data-lucide="search" class="w-5 h-5 text-[#002f6c]"></i>
                 Pré-visualização
               </h3>
-              <div class="bg-white border border-slate-200 rounded-2xl p-6 text-sm text-slate-700 shadow-inner max-h-[450px] overflow-y-auto font-serif" id="previewPanel">
+              <div class="bg-white border border-slate-300 rounded-2xl p-6 text-sm text-slate-700 shadow-inner max-h-[450px] overflow-y-auto font-serif" id="previewPanel">
                 <!-- Gerado por JS -->
               </div>
             </div>
@@ -319,7 +323,7 @@
           </div>
 
           <div class="relative group mt-4">
-            <textarea id="exportArea" readonly class="w-full h-[500px] p-8 bg-white border border-slate-200 rounded-3xl text-slate-700 font-mono text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#002f6c]/20 resize-none shadow-inner"></textarea>
+            <textarea id="exportArea" readonly class="w-full h-[500px] p-6 md:p-8 bg-white border border-slate-300 rounded-3xl text-slate-700 font-mono text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#002f6c]/20 resize-none shadow-inner"></textarea>
           </div>
         </div>
 
@@ -328,28 +332,31 @@
   </main>
 
   <!-- MODAL GERAL -->
-  <div id="modalOverlay" class="fixed inset-0 bg-[#002f6c]/40 backdrop-blur-sm z-50 hidden items-center justify-center opacity-0 transition-opacity duration-300">
-    <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-lg mx-4 transform scale-95 transition-transform duration-300" id="modalBox">
-      <div class="px-8 py-6 border-b border-slate-100 flex justify-between items-center">
+  <div id="modalOverlay" class="fixed inset-0 bg-[#002f6c]/60 backdrop-blur-sm z-[80] hidden items-center justify-center opacity-0 transition-opacity duration-300">
+    <!-- Ajuste mobile: flex-col, max-h-[90vh], scroll no body -->
+    <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-xl mx-4 transform scale-95 transition-transform duration-300 max-h-[90vh] flex flex-col" id="modalBox">
+      <div class="px-6 py-5 md:px-8 md:py-6 border-b border-slate-100 flex justify-between items-center shrink-0">
         <h3 class="text-xl font-bold text-[#002f6c]" id="modalTitle">Adicionar</h3>
         <button onclick="closeModal()" class="text-slate-400 hover:text-red-500 hover:bg-red-50 p-2 rounded-full transition-colors outline-none">
-          <i data-lucide="x" class="w-5 h-5"></i>
+          <i data-lucide="x" class="w-6 h-6"></i>
         </button>
       </div>
-      <div class="p-8 overflow-y-auto max-h-[65vh]" id="modalBody">
+      <!-- Conteúdo com scroll e fundo branco -->
+      <div class="p-6 md:p-8 overflow-y-auto flex-1 bg-white" id="modalBody">
         <!-- Form injected by JS -->
       </div>
-      <div class="px-8 py-5 border-t border-slate-100 bg-slate-50 rounded-b-[2rem] flex justify-end gap-3">
-        <button onclick="closeModal()" class="px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-200 rounded-xl transition-colors outline-none">Cancelar</button>
-        <button onclick="saveModal()" class="px-6 py-2.5 text-sm font-bold text-white bg-[#002f6c] hover:bg-[#001f4c] rounded-xl transition-all shadow-md outline-none">Salvar Informação</button>
+      <div class="px-6 py-4 md:px-8 md:py-5 border-t border-slate-200 bg-slate-50 rounded-b-[2rem] flex justify-end gap-3 shrink-0">
+        <button onclick="closeModal()" class="px-5 py-3 text-sm font-bold text-slate-600 hover:bg-slate-200 rounded-xl transition-colors outline-none">Cancelar</button>
+        <button onclick="saveModal()" class="px-6 py-3 text-sm font-bold text-white bg-[#002f6c] hover:bg-[#001f4c] rounded-xl transition-all shadow-md outline-none">Salvar Informação</button>
       </div>
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION (Atualizado para o Topo e mais evidente) -->
-  <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-4 rounded-2xl shadow-2xl flex items-center gap-3 transform -translate-y-32 opacity-0 transition-all duration-500 z-[100] font-medium min-w-max">
-    <i data-lucide="check-circle-2" class="w-6 h-6 text-[#1fa33a]"></i>
-    <span id="toastMsg" class="text-base">Ação realizada com sucesso!</span>
+  <!-- TOAST NOTIFICATION (Totalmente refeito para evitar bugs de ícones) -->
+  <div id="toast" class="fixed top-4 right-4 md:top-8 md:right-8 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-x-[150%] opacity-0 transition-all duration-300 z-[9999] font-medium min-w-[280px]">
+    <div id="toastIconSuccess" class="block text-[#1fa33a] shrink-0"><i data-lucide="check-circle-2" class="w-6 h-6"></i></div>
+    <div id="toastIconError" class="hidden text-red-400 shrink-0"><i data-lucide="alert-circle" class="w-6 h-6"></i></div>
+    <span id="toastMsg" class="text-sm md:text-base leading-tight">Ação realizada com sucesso!</span>
   </div>
 
   <script>
@@ -386,7 +393,7 @@
     function buildNavMenu() {
       const nav = document.getElementById('navMenu');
       nav.innerHTML = steps.map((step, idx) => `
-        <button onclick="goToStep(${idx})" id="navBtn_${idx}" class="w-full text-left px-4 py-3.5 rounded-2xl flex items-center gap-3 text-sm font-semibold transition-all duration-200 border border-transparent ${idx === 0 ? 'bg-[#002f6c] text-white shadow-md' : 'text-slate-600 hover:bg-slate-100'}">
+        <button onclick="goToStep(${idx})" id="navBtn_${idx}" class="shrink-0 md:w-full text-left px-5 py-3 md:px-4 md:py-3.5 rounded-2xl flex items-center gap-2 md:gap-3 text-sm font-semibold transition-all duration-200 border border-transparent whitespace-nowrap ${idx === 0 ? 'bg-[#002f6c] text-white shadow-md' : 'text-slate-600 hover:bg-slate-200 bg-white md:bg-transparent'}">
           <i data-lucide="${step.icon}" class="w-4 h-4 ${idx === 0 ? 'text-white' : 'text-slate-400'}"></i>
           ${step.title}
         </button>
@@ -399,7 +406,7 @@
       
       document.getElementById(steps[currentStepIndex].id).classList.remove('active');
       const oldNav = document.getElementById(`navBtn_${currentStepIndex}`);
-      oldNav.className = "w-full text-left px-4 py-3.5 rounded-2xl flex items-center gap-3 text-sm font-semibold transition-all duration-200 border border-transparent text-slate-600 hover:bg-slate-100";
+      oldNav.className = "shrink-0 md:w-full text-left px-5 py-3 md:px-4 md:py-3.5 rounded-2xl flex items-center gap-2 md:gap-3 text-sm font-semibold transition-all duration-200 border border-transparent text-slate-600 hover:bg-slate-200 bg-white md:bg-transparent whitespace-nowrap";
       
       const oldIcon = oldNav.querySelector('svg, i');
       if (oldIcon) oldIcon.classList.replace('text-white', 'text-slate-400');
@@ -407,7 +414,7 @@
       currentStepIndex = index;
       document.getElementById(steps[currentStepIndex].id).classList.add('active');
       const newNav = document.getElementById(`navBtn_${currentStepIndex}`);
-      newNav.className = "w-full text-left px-4 py-3.5 rounded-2xl flex items-center gap-3 text-sm font-semibold transition-all duration-200 bg-[#002f6c] text-white shadow-md";
+      newNav.className = "shrink-0 md:w-full text-left px-5 py-3 md:px-4 md:py-3.5 rounded-2xl flex items-center gap-2 md:gap-3 text-sm font-semibold transition-all duration-200 bg-[#002f6c] text-white shadow-md whitespace-nowrap";
       
       const newIcon = newNav.querySelector('svg, i');
       if (newIcon) newIcon.classList.replace('text-slate-400', 'text-white');
@@ -429,6 +436,9 @@
 
       lucide.createIcons();
       updateProgress();
+      
+      // Ajusta o scroll do menu no mobile automaticamente para centralizar o botão
+      newNav.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }
 
     function nextStep() { goToStep(currentStepIndex + 1); }
@@ -455,48 +465,48 @@
     // --- RENDERIZADORES DE LISTA ---
     function renderLists() {
       document.getElementById('list_exp').innerHTML = cvData.exp.map((item, idx) => `
-        <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm relative group hover:border-[#002f6c]/30 hover:shadow-md transition-all">
-          <div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button onclick="editModal('exp', ${idx})" class="p-2 text-slate-400 hover:text-[#002f6c] bg-slate-50 hover:bg-blue-50 rounded-xl"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-            <button onclick="deleteItem('exp', ${idx})" class="p-2 text-slate-400 hover:text-red-600 bg-slate-50 hover:bg-red-50 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+        <div class="bg-white border-2 border-slate-200 p-5 rounded-2xl shadow-sm relative group hover:border-[#002f6c]/40 hover:shadow-md transition-all">
+          <div class="absolute top-4 right-4 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+            <button onclick="editModal('exp', ${idx})" class="p-2 text-slate-500 hover:text-[#002f6c] bg-slate-100 hover:bg-blue-100 rounded-xl"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+            <button onclick="deleteItem('exp', ${idx})" class="p-2 text-slate-500 hover:text-red-600 bg-slate-100 hover:bg-red-100 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </div>
-          <h4 class="font-bold text-[#002f6c] text-lg">${item.cargo}</h4>
-          <p class="text-sm font-semibold text-slate-700 mt-1">${item.empresa}</p>
-          <p class="text-xs font-medium text-slate-500 mt-1 flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${item.inicio} - ${item.fim || 'Atual'}</p>
+          <h4 class="font-bold text-[#002f6c] text-lg pr-20">${item.cargo}</h4>
+          <p class="text-sm font-bold text-slate-700 mt-1">${item.empresa}</p>
+          <p class="text-xs font-semibold text-slate-500 mt-1.5 flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${item.inicio} - ${item.fim || 'Atual'}</p>
         </div>
       `).join('');
 
       document.getElementById('list_edu').innerHTML = cvData.edu.map((item, idx) => `
-        <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm relative group hover:border-[#002f6c]/30 hover:shadow-md transition-all">
-          <div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button onclick="editModal('edu', ${idx})" class="p-2 text-slate-400 hover:text-[#002f6c] bg-slate-50 hover:bg-blue-50 rounded-xl"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-            <button onclick="deleteItem('edu', ${idx})" class="p-2 text-slate-400 hover:text-red-600 bg-slate-50 hover:bg-red-50 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+        <div class="bg-white border-2 border-slate-200 p-5 rounded-2xl shadow-sm relative group hover:border-[#002f6c]/40 hover:shadow-md transition-all">
+          <div class="absolute top-4 right-4 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+            <button onclick="editModal('edu', ${idx})" class="p-2 text-slate-500 hover:text-[#002f6c] bg-slate-100 hover:bg-blue-100 rounded-xl"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+            <button onclick="deleteItem('edu', ${idx})" class="p-2 text-slate-500 hover:text-red-600 bg-slate-100 hover:bg-red-100 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
           </div>
-          <h4 class="font-bold text-[#002f6c] text-lg">${item.curso}</h4>
-          <p class="text-sm font-semibold text-slate-700 mt-1">${item.inst}</p>
-          <p class="text-xs font-medium text-slate-500 mt-1 flex items-center gap-1.5"><i data-lucide="award" class="w-3.5 h-3.5"></i> ${item.inicio} - ${item.ano}</p>
+          <h4 class="font-bold text-[#002f6c] text-lg pr-20">${item.curso}</h4>
+          <p class="text-sm font-bold text-slate-700 mt-1">${item.inst}</p>
+          <p class="text-xs font-semibold text-slate-500 mt-1.5 flex items-center gap-1.5"><i data-lucide="award" class="w-3.5 h-3.5"></i> ${item.inicio} - ${item.ano}</p>
         </div>
       `).join('');
 
       document.getElementById('list_lang').innerHTML = cvData.lang.map((item, idx) => `
-        <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl flex justify-between items-center group">
-          <div><span class="font-bold text-[#002f6c]">${item.idioma}</span> <span class="text-sm font-medium text-slate-500 ml-2 border-l border-slate-300 pl-2">${item.nivel}</span></div>
-          <div class="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button onclick="editModal('lang', ${idx})" class="p-1.5 text-slate-400 hover:text-[#002f6c] bg-white rounded-md shadow-sm"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
-            <button onclick="deleteItem('lang', ${idx})" class="p-1.5 text-slate-400 hover:text-red-600 bg-white rounded-md shadow-sm"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+        <div class="bg-white border-2 border-slate-200 p-4 rounded-xl flex justify-between items-center group shadow-sm">
+          <div><span class="font-bold text-[#002f6c]">${item.idioma}</span> <span class="text-sm font-semibold text-slate-500 ml-2 border-l-2 border-slate-300 pl-2">${item.nivel}</span></div>
+          <div class="flex gap-1.5 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+            <button onclick="editModal('lang', ${idx})" class="p-2 text-slate-500 hover:text-[#002f6c] bg-slate-100 rounded-lg"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
+            <button onclick="deleteItem('lang', ${idx})" class="p-2 text-slate-500 hover:text-red-600 bg-slate-100 rounded-lg"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
           </div>
         </div>
       `).join('');
 
       document.getElementById('list_courses').innerHTML = cvData.course.map((item, idx) => `
-        <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl flex justify-between items-center group">
+        <div class="bg-white border-2 border-slate-200 p-4 rounded-xl flex justify-between items-center group shadow-sm">
           <div>
             <div class="font-bold text-[#002f6c]">${item.nome}</div>
-            <div class="text-xs font-medium text-slate-500 mt-0.5">${item.inst}</div>
+            <div class="text-xs font-semibold text-slate-500 mt-0.5">${item.inst}</div>
           </div>
-          <div class="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button onclick="editModal('course', ${idx})" class="p-1.5 text-slate-400 hover:text-[#002f6c] bg-white rounded-md shadow-sm"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
-            <button onclick="deleteItem('course', ${idx})" class="p-1.5 text-slate-400 hover:text-red-600 bg-white rounded-md shadow-sm"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+          <div class="flex gap-1.5 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+            <button onclick="editModal('course', ${idx})" class="p-2 text-slate-500 hover:text-[#002f6c] bg-slate-100 rounded-lg"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
+            <button onclick="deleteItem('course', ${idx})" class="p-2 text-slate-500 hover:text-red-600 bg-slate-100 rounded-lg"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
           </div>
         </div>
       `).join('');
@@ -508,7 +518,7 @@
     function deleteItem(type, idx) {
       cvData[type].splice(idx, 1);
       renderLists();
-      showToast("Item removido da lista!", true); // Pass true to show alert color/icon
+      showToast("Item removido da lista!", true); 
     }
 
     // --- MODAIS ---
@@ -536,32 +546,32 @@
         title = 'Experiência Profissional';
         html = `
           <div class="space-y-5">
-            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Empresa <span class="text-red-500">*</span></label>
-            <input type="text" id="m_empresa" value="${v(item.empresa)}" class="input-premium" placeholder="Nome da empresa"></div>
-            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Cargo <span class="text-red-500">*</span></label>
+            <div><label class="block text-sm font-bold text-slate-700 mb-2">Empresa <span class="text-red-500">*</span></label>
+            <input type="text" id="m_empresa" value="${v(item.empresa)}" class="input-premium" placeholder="Ex: Nome da empresa"></div>
+            <div><label class="block text-sm font-bold text-slate-700 mb-2">Cargo <span class="text-red-500">*</span></label>
             <input type="text" id="m_cargo" value="${v(item.cargo)}" class="input-premium" placeholder="Ex: Analista de Marketing"></div>
             <div class="grid grid-cols-2 gap-5">
-              <div><label class="block text-sm font-semibold text-slate-700 mb-2">Mês/Ano Início <span class="text-red-500">*</span></label>
+              <div><label class="block text-sm font-bold text-slate-700 mb-2">Mês/Ano Início <span class="text-red-500">*</span></label>
               <input type="text" id="m_inicio" value="${v(item.inicio)}" class="input-premium" placeholder="Ex: 03/2021"></div>
-              <div><label class="block text-sm font-semibold text-slate-700 mb-2">Mês/Ano Fim</label>
+              <div><label class="block text-sm font-bold text-slate-700 mb-2">Mês/Ano Fim</label>
               <input type="text" id="m_fim" value="${v(item.fim)}" class="input-premium" placeholder="Em branco se atual"></div>
             </div>
-            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Descrição das atividades</label>
-            <textarea id="m_desc" rows="4" class="input-premium text-sm leading-relaxed" placeholder="Inserir aqui a descrição de suas atividades">${v(item.desc)}</textarea></div>
+            <div><label class="block text-sm font-bold text-slate-700 mb-2">Descrição das atividades</label>
+            <textarea id="m_desc" rows="6" class="input-premium min-h-[150px] resize-y text-sm leading-relaxed" placeholder="Descreva aqui suas atividades e principais resultados.">${v(item.desc)}</textarea></div>
           </div>`;
       }
       else if (type === 'edu') {
         title = 'Formação Acadêmica';
         html = `
           <div class="space-y-5">
-            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Grau / Curso <span class="text-red-500">*</span></label>
+            <div><label class="block text-sm font-bold text-slate-700 mb-2">Grau / Curso <span class="text-red-500">*</span></label>
             <input type="text" id="m_curso" value="${v(item.curso)}" class="input-premium" placeholder="Ex: Graduação em Administração"></div>
-            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Instituição <span class="text-red-500">*</span></label>
+            <div><label class="block text-sm font-bold text-slate-700 mb-2">Instituição <span class="text-red-500">*</span></label>
             <input type="text" id="m_inst" value="${v(item.inst)}" class="input-premium" placeholder="Ex: Universidade X"></div>
             <div class="grid grid-cols-2 gap-5">
-              <div><label class="block text-sm font-semibold text-slate-700 mb-2">Ano de Início <span class="text-red-500">*</span></label>
+              <div><label class="block text-sm font-bold text-slate-700 mb-2">Ano de Início <span class="text-red-500">*</span></label>
               <input type="text" id="m_inicio" value="${v(item.inicio)}" class="input-premium" placeholder="Ex: 2018"></div>
-              <div><label class="block text-sm font-semibold text-slate-700 mb-2">Ano de Término <span class="text-red-500">*</span></label>
+              <div><label class="block text-sm font-bold text-slate-700 mb-2">Ano de Término <span class="text-red-500">*</span></label>
               <input type="text" id="m_ano" value="${v(item.ano)}" class="input-premium" placeholder="Ex: 2022"></div>
             </div>
           </div>`;
@@ -570,9 +580,9 @@
         title = 'Idioma';
         html = `
           <div class="space-y-5">
-            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Idioma <span class="text-red-500">*</span></label>
+            <div><label class="block text-sm font-bold text-slate-700 mb-2">Idioma <span class="text-red-500">*</span></label>
             <input type="text" id="m_idioma" value="${v(item.idioma)}" class="input-premium" placeholder="Ex: Inglês"></div>
-            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Nível</label>
+            <div><label class="block text-sm font-bold text-slate-700 mb-2">Nível</label>
             <select id="m_nivel" class="input-premium">
               <option value="Básico" ${item.nivel === 'Básico' ? 'selected' : ''}>Básico</option>
               <option value="Intermediário" ${item.nivel === 'Intermediário' ? 'selected' : ''}>Intermediário</option>
@@ -586,9 +596,9 @@
         title = 'Curso Complementar';
         html = `
           <div class="space-y-5">
-            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Nome do Curso <span class="text-red-500">*</span></label>
+            <div><label class="block text-sm font-bold text-slate-700 mb-2">Nome do Curso <span class="text-red-500">*</span></label>
             <input type="text" id="m_nome" value="${v(item.nome)}" class="input-premium" placeholder="Ex: Excel Avançado"></div>
-            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Descrição / Instituição</label>
+            <div><label class="block text-sm font-bold text-slate-700 mb-2">Descrição / Instituição</label>
             <input type="text" id="m_inst" value="${v(item.inst)}" class="input-premium" placeholder="Ex: Udemy"></div>
           </div>`;
       }
@@ -604,7 +614,7 @@
       if (modalType === 'exp') {
         const cargo = document.getElementById('m_cargo').value.trim();
         const empresa = document.getElementById('m_empresa').value.trim();
-        if(!cargo || !empresa) { showToast("Preencha os campos obrigatórios", true); return; }
+        if(!cargo || !empresa) { showToast("Preencha os campos obrigatórios (*)", true); return; }
         
         obj = {
           cargo,
@@ -616,7 +626,7 @@
         successMsg = "Experiência adicionada com sucesso!";
       } else if (modalType === 'edu') {
         const curso = document.getElementById('m_curso').value.trim();
-        if(!curso) { showToast("Preencha os campos obrigatórios", true); return; }
+        if(!curso) { showToast("Preencha os campos obrigatórios (*)", true); return; }
         
         obj = {
           curso,
@@ -627,13 +637,13 @@
         successMsg = "Formação adicionada com sucesso!";
       } else if (modalType === 'lang') {
         const idioma = document.getElementById('m_idioma').value.trim();
-        if(!idioma) { showToast("Preencha os campos obrigatórios", true); return; }
+        if(!idioma) { showToast("Preencha os campos obrigatórios (*)", true); return; }
         
         obj = { idioma, nivel: document.getElementById('m_nivel').value };
         successMsg = "Idioma adicionado com sucesso!";
       } else if (modalType === 'course') {
         const nome = document.getElementById('m_nome').value.trim();
-        if(!nome) { showToast("Preencha os campos obrigatórios", true); return; }
+        if(!nome) { showToast("Preencha os campos obrigatórios (*)", true); return; }
         
         obj = {
           nome,
@@ -644,7 +654,7 @@
 
       if (editIndex !== null) {
         cvData[modalType][editIndex] = obj;
-        showToast("Item atualizado com sucesso!");
+        showToast("Dados atualizados com sucesso!");
       } else {
         cvData[modalType].push(obj);
         showToast(successMsg);
@@ -857,7 +867,6 @@
       const element = document.createElement('div');
       element.innerHTML = getFormattedHTML();
       
-      // Ajustes temporários para a impressão ser preta no branco
       element.style.background = '#ffffff';
       element.style.color = '#000000';
 
@@ -884,31 +893,33 @@
       });
     }
 
-    // --- TOAST NOTIFICATION ---
+    // --- TOAST NOTIFICATION CORRIGIDO ---
     let toastTimeout;
     function showToast(msg, isError = false) {
       const toast = document.getElementById('toast');
-      const icon = toast.querySelector('i');
+      const iconSuccess = document.getElementById('toastIconSuccess');
+      const iconError = document.getElementById('toastIconError');
+      
       document.getElementById('toastMsg').textContent = msg;
       
       if (isError) {
-        icon.setAttribute('data-lucide', 'alert-circle');
-        icon.classList.replace('text-[#1fa33a]', 'text-red-400');
-        toast.classList.replace('bg-slate-900', 'bg-red-900');
+        iconSuccess.classList.add('hidden');
+        iconError.classList.remove('hidden');
+        toast.classList.replace('bg-slate-900', 'bg-red-600');
       } else {
-        icon.setAttribute('data-lucide', 'check-circle-2');
-        icon.classList.replace('text-red-400', 'text-[#1fa33a]');
-        toast.classList.replace('bg-red-900', 'bg-slate-900');
+        iconSuccess.classList.remove('hidden');
+        iconError.classList.add('hidden');
+        toast.classList.replace('bg-red-600', 'bg-slate-900');
       }
-      lucide.createIcons();
       
-      // Animação de entrada (desce do topo)
-      toast.classList.remove('-translate-y-32', 'opacity-0');
+      toast.classList.remove('translate-x-[150%]', 'opacity-0');
+      toast.classList.add('translate-x-0', 'opacity-100');
       
       if (toastTimeout) clearTimeout(toastTimeout);
       toastTimeout = setTimeout(() => {
-        toast.classList.add('-translate-y-32', 'opacity-0');
-      }, 3500); // Fica na tela por 3.5 segundos
+        toast.classList.remove('translate-x-0', 'opacity-100');
+        toast.classList.add('translate-x-[150%]', 'opacity-0');
+      }, 3500); 
     }
 
     function updateView() {
