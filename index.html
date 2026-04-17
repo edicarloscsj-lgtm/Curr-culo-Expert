@@ -6,6 +6,9 @@
   <title>Currículo Expert - Otimizado para Gupy</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Biblioteca para gerar PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
     body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
@@ -44,25 +47,19 @@
     
     <!-- Branding / Logo -->
     <div class="p-6 border-b border-slate-100 flex flex-col items-center justify-center bg-white relative overflow-hidden">
-      <!-- Brilho de fundo sutil -->
       <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#002f6c]/5 to-transparent pointer-events-none"></div>
       
       <div class="flex items-center gap-3 z-10 w-full">
-        <!-- Reconstrução da Logo em SVG -->
+        <!-- Logo em SVG -->
         <div class="relative w-12 h-12 flex-shrink-0">
           <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-sm">
-            <!-- Outer swoosh -->
             <path d="M 45 10 A 40 40 0 1 0 85 55" fill="none" stroke="#002f6c" stroke-width="8" stroke-linecap="round"/>
-            <!-- Document base -->
             <rect x="35" y="20" width="32" height="42" rx="4" fill="none" stroke="#002f6c" stroke-width="6"/>
-            <!-- Person icon inside doc -->
             <circle cx="45" cy="32" r="5" fill="#002f6c"/>
             <path d="M 38 45 Q 45 38 52 45" fill="none" stroke="#002f6c" stroke-width="4" stroke-linecap="round"/>
-            <!-- Lines -->
             <line x1="56" y1="30" x2="62" y2="30" stroke="#002f6c" stroke-width="4" stroke-linecap="round"/>
             <line x1="56" y1="36" x2="62" y2="36" stroke="#002f6c" stroke-width="4" stroke-linecap="round"/>
             <line x1="40" y1="52" x2="60" y2="52" stroke="#002f6c" stroke-width="4" stroke-linecap="round"/>
-            <!-- Green Check -->
             <path d="M 45 65 L 60 80 L 95 35" fill="none" stroke="#1fa33a" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
@@ -113,7 +110,6 @@
   <!-- Conteúdo Principal -->
   <main class="flex-1 flex flex-col h-full bg-slate-50 overflow-hidden relative">
     
-    <!-- Padrão de fundo suave -->
     <div class="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#002f6c 1px, transparent 1px); background-size: 24px 24px;"></div>
 
     <!-- Header da Etapa -->
@@ -144,7 +140,7 @@
             </div>
             <div>
               <p class="font-bold text-[#002f6c] mb-1 text-base">Dica da Gaia: Apenas o essencial.</p>
-              <p class="text-blue-900/80 leading-relaxed">Não inclua foto, RG, CPF ou estado civil. A IA de recrutamento foca em suas competências. Utilize um e-mail profissional (evite apelidos).</p>
+              <p class="text-blue-900/80 leading-relaxed">A IA foca nas suas competências. Utilize um e-mail profissional e preencha sua idade (opcional) para manter o formato exato da Gupy.</p>
             </div>
           </div>
           
@@ -165,14 +161,14 @@
                 <input type="tel" id="f_tel" oninput="updateProgress()" class="input-premium" placeholder="(11) 99999-9999">
               </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="md:col-span-2">
                 <label class="block text-sm font-semibold text-slate-700 mb-2">Cidade e Estado <span class="text-red-500">*</span></label>
                 <input type="text" id="f_cidade" oninput="updateProgress()" class="input-premium" placeholder="Ex: São Paulo, SP">
               </div>
               <div>
-                <label class="block text-sm font-semibold text-slate-700 mb-2">LinkedIn (Opcional)</label>
-                <input type="text" id="f_linkedin" class="input-premium" placeholder="linkedin.com/in/seuperfil">
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Idade <span class="text-slate-400 font-normal text-xs">(Opcional)</span></label>
+                <input type="text" id="f_idade" oninput="updateProgress()" class="input-premium" placeholder="Ex: 25 anos">
               </div>
             </div>
           </div>
@@ -186,13 +182,13 @@
             </div>
             <div>
               <p class="font-bold text-[#002f6c] mb-1 text-base">Crucial para a IA de Triagem.</p>
-              <p class="text-slate-700 leading-relaxed">O Resumo Profissional é o primeiro bloco lido. Adicione as <b>palavras-chave</b> principais da sua área, seu tempo de experiência e o seu foco principal.</p>
+              <p class="text-slate-700 leading-relaxed">O Resumo Profissional é a primeira parte analisada. Adicione as <b>palavras-chave</b> principais da sua área, seu tempo de experiência e seu foco.</p>
             </div>
           </div>
           
           <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-8">
             <label class="block text-sm font-semibold text-slate-700 mb-3">Resumo / Objetivo Profissional <span class="text-red-500">*</span></label>
-            <textarea id="f_resumo" rows="6" oninput="updateProgress()" class="input-premium text-sm leading-relaxed" placeholder="Ex: Profissional de Marketing com 5 anos de experiência focada em SEO, análise de métricas e inbound marketing. Busco posições como Analista de Marketing Sênior para impulsionar a aquisição de clientes utilizando estratégias data-driven."></textarea>
+            <textarea id="f_resumo" rows="6" oninput="updateProgress()" class="input-premium text-sm leading-relaxed" placeholder="Ex: Profissional com 5 anos de experiência focada em análise de métricas e atendimento estratégico. Busco posições como Analista Pleno para impulsionar a aquisição de clientes utilizando estratégias de dados."></textarea>
             <div class="flex items-center gap-2 mt-3 text-xs text-slate-500 font-medium">
               <i data-lucide="lightbulb" class="w-4 h-4 text-amber-500"></i>
               Dica: Mencione o cargo que deseja ocupar e 3 a 5 habilidades chaves.
@@ -208,7 +204,7 @@
             </div>
             <div>
               <p class="font-bold text-amber-900 mb-1 text-base">Atenção às Datas</p>
-              <p class="text-amber-800/80 leading-relaxed">Insira da mais recente para a mais antiga. Sempre inclua <b>Mês e Ano</b> (ex: 03/2021). Descreva as atividades focando em resultados alcançados.</p>
+              <p class="text-amber-800/80 leading-relaxed">Insira da mais recente para a mais antiga. Sempre inclua <b>Mês/Ano</b> (ex: 03/2021). Descreva as atividades focando nos resultados gerados.</p>
             </div>
           </div>
           
@@ -227,7 +223,7 @@
             </div>
             <div>
               <p class="font-bold text-[#002f6c] mb-1 text-base">Nível de Escolaridade</p>
-              <p class="text-blue-900/80 leading-relaxed">Adicione cursos técnicos, graduação, pós-graduação. Se estiver cursando, informe a data prevista de conclusão.</p>
+              <p class="text-blue-900/80 leading-relaxed">Siga o padrão sugerido preenchendo Ano de Início e o Ano de Término. Se estiver cursando, coloque a previsão de término.</p>
             </div>
           </div>
           
@@ -260,7 +256,7 @@
               </div>
               <div>
                 <h3 class="text-xl font-bold text-[#002f6c]">Cursos Complementares</h3>
-                <p class="text-sm text-slate-500 mt-1">Inclua apenas cursos relevantes para a vaga desejada. Cursos rápidos contam muito na triagem de palavras-chave.</p>
+                <p class="text-sm text-slate-500 mt-1">Inclua apenas cursos relevantes para a vaga desejada (Workshops, Certificações).</p>
               </div>
             </div>
             <div class="mt-6">
@@ -292,9 +288,9 @@
             <div>
               <h3 class="text-xl font-bold text-[#002f6c] mb-5 flex items-center gap-2">
                 <i data-lucide="search" class="w-5 h-5 text-[#002f6c]"></i>
-                Como a IA vai ler
+                Pré-visualização
               </h3>
-              <div class="bg-white border border-slate-200 rounded-2xl p-6 text-sm text-slate-700 shadow-inner max-h-[450px] overflow-y-auto" id="previewPanel">
+              <div class="bg-white border border-slate-200 rounded-2xl p-6 text-sm text-slate-700 shadow-inner max-h-[450px] overflow-y-auto font-serif" id="previewPanel">
                 <!-- Gerado por JS -->
               </div>
             </div>
@@ -303,26 +299,26 @@
 
         <!-- ETAPA 6: Exportar -->
         <div class="step-content" id="step6">
-          <div class="bg-[#1fa33a]/10 border border-[#1fa33a]/20 text-slate-800 rounded-3xl p-6 md:p-8 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-sm">
+          <div class="bg-[#1fa33a]/10 border border-[#1fa33a]/20 text-slate-800 rounded-3xl p-6 md:p-8 mb-8 flex flex-col gap-6 shadow-sm">
             <div>
               <h3 class="font-black text-2xl mb-2 flex items-center gap-2 text-[#002f6c]">
-                <i data-lucide="party-popper" class="w-6 h-6 text-[#1fa33a]"></i> Seu currículo está pronto!
+                <i data-lucide="party-popper" class="w-6 h-6 text-[#1fa33a]"></i> Currículo Pronto!
               </h3>
-              <p class="text-sm font-medium leading-relaxed max-w-xl">
-                Para enviar à Gupy, copie o texto estruturado abaixo, cole em um documento vazio (Word ou Google Docs), salve em <b>.DOCX</b> ou <b>.PDF</b> e faça o upload. <br><span class="text-red-600 font-bold">Importante:</span> Não mude para formato de duas colunas, mantenha o texto simples!
+              <p class="text-sm font-medium leading-relaxed max-w-2xl">
+                Seu currículo foi gerado com a formatação exata que as IAs de recrutamento (como a Gaia) conseguem processar melhor. Você pode <b>Baixar em PDF</b> para anexar na plataforma ou copiar o texto.
               </p>
             </div>
-            <button onclick="copyToClipboard()" class="shrink-0 px-8 py-4 bg-[#1fa33a] text-white font-bold rounded-2xl hover:bg-[#1a8c31] transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 flex items-center gap-3 outline-none focus:ring-4 focus:ring-[#1fa33a]/30">
-              <i data-lucide="copy" class="w-5 h-5"></i> Copiar Conteúdo
-            </button>
+            <div class="flex flex-col sm:flex-row gap-4">
+              <button onclick="downloadPDF()" class="px-8 py-4 bg-[#1fa33a] text-white font-bold rounded-2xl hover:bg-[#1a8c31] transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 flex items-center justify-center gap-3 outline-none focus:ring-4 focus:ring-[#1fa33a]/30">
+                <i data-lucide="file-down" class="w-5 h-5"></i> Baixar em PDF
+              </button>
+              <button onclick="copyToClipboard()" class="px-8 py-4 bg-white text-slate-700 font-bold border border-slate-300 rounded-2xl hover:bg-slate-50 transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-3 outline-none focus:ring-4 focus:ring-slate-200">
+                <i data-lucide="copy" class="w-5 h-5"></i> Copiar Texto
+              </button>
+            </div>
           </div>
 
           <div class="relative group mt-4">
-            <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-              <button onclick="copyToClipboard()" class="p-3 bg-slate-800 text-white hover:bg-slate-700 rounded-xl shadow-lg border border-slate-600 tooltip" title="Copiar texto">
-                <i data-lucide="copy" class="w-4 h-4"></i>
-              </button>
-            </div>
             <textarea id="exportArea" readonly class="w-full h-[500px] p-8 bg-white border border-slate-200 rounded-3xl text-slate-700 font-mono text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#002f6c]/20 resize-none shadow-inner"></textarea>
           </div>
         </div>
@@ -350,22 +346,22 @@
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION -->
-  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-8 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-400 z-50 font-medium">
-    <i data-lucide="check-circle-2" class="w-5 h-5 text-[#1fa33a]"></i>
-    <span id="toastMsg" class="text-sm">Ação realizada!</span>
+  <!-- TOAST NOTIFICATION (Atualizado para o Topo e mais evidente) -->
+  <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-4 rounded-2xl shadow-2xl flex items-center gap-3 transform -translate-y-32 opacity-0 transition-all duration-500 z-[100] font-medium min-w-max">
+    <i data-lucide="check-circle-2" class="w-6 h-6 text-[#1fa33a]"></i>
+    <span id="toastMsg" class="text-base">Ação realizada com sucesso!</span>
   </div>
 
   <script>
     // --- ESTADO DA APLICAÇÃO ---
     const steps = [
-      { id: 'step0', title: 'Dados Pessoais', sub: 'Informações de contato (sem dados sensíveis)', icon: 'user' },
-      { id: 'step1', title: 'Resumo Profissional', sub: 'Sua vitrine de palavras-chave', icon: 'align-left' },
-      { id: 'step2', title: 'Experiência Profissional', sub: 'Histórico na ordem decrescente', icon: 'briefcase' },
-      { id: 'step3', title: 'Formação Acadêmica', sub: 'Cursos de longa duração', icon: 'graduation-cap' },
-      { id: 'step4', title: 'Idiomas & Cursos', sub: 'Capacitações complementares', icon: 'award' },
-      { id: 'step5', title: 'Revisão Final', sub: 'Checklist anti-erros da Gupy', icon: 'check-square' },
-      { id: 'step6', title: 'Exportar Currículo', sub: 'Pronto para o Word/Docs', icon: 'download' }
+      { id: 'step0', title: 'Dados Pessoais', sub: 'Informações de contato', icon: 'user' },
+      { id: 'step1', title: 'Resumo Profissional', sub: 'Sua vitrine principal', icon: 'align-left' },
+      { id: 'step2', title: 'Experiência Profissional', sub: 'Seu histórico profissional', icon: 'briefcase' },
+      { id: 'step3', title: 'Formação Acadêmica', sub: 'Educação e especializações', icon: 'graduation-cap' },
+      { id: 'step4', title: 'Idiomas & Cursos', sub: 'Habilidades extras', icon: 'award' },
+      { id: 'step5', title: 'Revisão Final', sub: 'Checklist anti-erros', icon: 'check-square' },
+      { id: 'step6', title: 'Exportar Currículo', sub: 'Gere seu PDF ou doc', icon: 'download' }
     ];
 
     let currentStepIndex = 0;
@@ -401,32 +397,24 @@
     function goToStep(index) {
       if(index < 0 || index >= steps.length) return;
       
-      // Ocultar atual
       document.getElementById(steps[currentStepIndex].id).classList.remove('active');
       const oldNav = document.getElementById(`navBtn_${currentStepIndex}`);
       oldNav.className = "w-full text-left px-4 py-3.5 rounded-2xl flex items-center gap-3 text-sm font-semibold transition-all duration-200 border border-transparent text-slate-600 hover:bg-slate-100";
       
       const oldIcon = oldNav.querySelector('svg, i');
-      if (oldIcon) {
-          oldIcon.classList.replace('text-white', 'text-slate-400');
-      }
+      if (oldIcon) oldIcon.classList.replace('text-white', 'text-slate-400');
 
-      // Mostrar novo
       currentStepIndex = index;
       document.getElementById(steps[currentStepIndex].id).classList.add('active');
       const newNav = document.getElementById(`navBtn_${currentStepIndex}`);
       newNav.className = "w-full text-left px-4 py-3.5 rounded-2xl flex items-center gap-3 text-sm font-semibold transition-all duration-200 bg-[#002f6c] text-white shadow-md";
       
       const newIcon = newNav.querySelector('svg, i');
-      if (newIcon) {
-          newIcon.classList.replace('text-slate-400', 'text-white');
-      }
+      if (newIcon) newIcon.classList.replace('text-slate-400', 'text-white');
 
-      // Atualizar Header
       document.getElementById('stepTitle').textContent = steps[index].title;
       document.getElementById('stepSub').textContent = steps[index].sub;
       
-      // Botões Prev/Next
       document.getElementById('btnPrev').classList.toggle('hidden', index === 0);
       const btnNext = document.getElementById('btnNext');
       if (index === steps.length - 1) {
@@ -436,7 +424,6 @@
         btnNext.innerHTML = 'Próximo <i data-lucide="arrow-right" class="w-4 h-4"></i>';
       }
 
-      // Actions específicas das steps
       if(index === 5) renderReview();
       if(index === 6) renderExport();
 
@@ -467,7 +454,6 @@
 
     // --- RENDERIZADORES DE LISTA ---
     function renderLists() {
-      // Experiências
       document.getElementById('list_exp').innerHTML = cvData.exp.map((item, idx) => `
         <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm relative group hover:border-[#002f6c]/30 hover:shadow-md transition-all">
           <div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -476,11 +462,10 @@
           </div>
           <h4 class="font-bold text-[#002f6c] text-lg">${item.cargo}</h4>
           <p class="text-sm font-semibold text-slate-700 mt-1">${item.empresa}</p>
-          <p class="text-xs font-medium text-slate-500 mt-1 flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${item.inicio} até ${item.fim || 'Atual'}</p>
+          <p class="text-xs font-medium text-slate-500 mt-1 flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${item.inicio} - ${item.fim || 'Atual'}</p>
         </div>
       `).join('');
 
-      // Formação
       document.getElementById('list_edu').innerHTML = cvData.edu.map((item, idx) => `
         <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm relative group hover:border-[#002f6c]/30 hover:shadow-md transition-all">
           <div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -489,11 +474,10 @@
           </div>
           <h4 class="font-bold text-[#002f6c] text-lg">${item.curso}</h4>
           <p class="text-sm font-semibold text-slate-700 mt-1">${item.inst}</p>
-          <p class="text-xs font-medium text-slate-500 mt-1 flex items-center gap-1.5"><i data-lucide="award" class="w-3.5 h-3.5"></i> ${item.status} ${item.ano ? `(${item.ano})` : ''}</p>
+          <p class="text-xs font-medium text-slate-500 mt-1 flex items-center gap-1.5"><i data-lucide="award" class="w-3.5 h-3.5"></i> ${item.inicio} - ${item.ano}</p>
         </div>
       `).join('');
 
-      // Idiomas
       document.getElementById('list_lang').innerHTML = cvData.lang.map((item, idx) => `
         <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl flex justify-between items-center group">
           <div><span class="font-bold text-[#002f6c]">${item.idioma}</span> <span class="text-sm font-medium text-slate-500 ml-2 border-l border-slate-300 pl-2">${item.nivel}</span></div>
@@ -504,12 +488,11 @@
         </div>
       `).join('');
 
-      // Cursos
       document.getElementById('list_courses').innerHTML = cvData.course.map((item, idx) => `
         <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl flex justify-between items-center group">
           <div>
             <div class="font-bold text-[#002f6c]">${item.nome}</div>
-            <div class="text-xs font-medium text-slate-500 mt-0.5">${item.inst} ${item.carga ? `• ${item.carga}` : ''}</div>
+            <div class="text-xs font-medium text-slate-500 mt-0.5">${item.inst}</div>
           </div>
           <div class="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
             <button onclick="editModal('course', ${idx})" class="p-1.5 text-slate-400 hover:text-[#002f6c] bg-white rounded-md shadow-sm"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
@@ -525,7 +508,7 @@
     function deleteItem(type, idx) {
       cvData[type].splice(idx, 1);
       renderLists();
-      showToast("Item removido");
+      showToast("Item removido da lista!", true); // Pass true to show alert color/icon
     }
 
     // --- MODAIS ---
@@ -553,37 +536,33 @@
         title = 'Experiência Profissional';
         html = `
           <div class="space-y-5">
-            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Cargo <span class="text-red-500">*</span></label>
-            <input type="text" id="m_cargo" value="${v(item.cargo)}" class="input-premium" placeholder="Ex: Analista de Marketing"></div>
             <div><label class="block text-sm font-semibold text-slate-700 mb-2">Empresa <span class="text-red-500">*</span></label>
             <input type="text" id="m_empresa" value="${v(item.empresa)}" class="input-premium" placeholder="Nome da empresa"></div>
+            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Cargo <span class="text-red-500">*</span></label>
+            <input type="text" id="m_cargo" value="${v(item.cargo)}" class="input-premium" placeholder="Ex: Analista de Marketing"></div>
             <div class="grid grid-cols-2 gap-5">
-              <div><label class="block text-sm font-semibold text-slate-700 mb-2">Início (MM/AAAA) <span class="text-red-500">*</span></label>
+              <div><label class="block text-sm font-semibold text-slate-700 mb-2">Mês/Ano Início <span class="text-red-500">*</span></label>
               <input type="text" id="m_inicio" value="${v(item.inicio)}" class="input-premium" placeholder="Ex: 03/2021"></div>
-              <div><label class="block text-sm font-semibold text-slate-700 mb-2">Fim (MM/AAAA)</label>
+              <div><label class="block text-sm font-semibold text-slate-700 mb-2">Mês/Ano Fim</label>
               <input type="text" id="m_fim" value="${v(item.fim)}" class="input-premium" placeholder="Em branco se atual"></div>
             </div>
-            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Principais Atividades e Resultados</label>
-            <textarea id="m_desc" rows="4" class="input-premium text-sm leading-relaxed" placeholder="- Liderança de equipe de 5 pessoas.\n- Aumento de 20% nas vendas no primeiro semestre...">${v(item.desc)}</textarea></div>
+            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Descrição das atividades</label>
+            <textarea id="m_desc" rows="4" class="input-premium text-sm leading-relaxed" placeholder="Inserir aqui a descrição de suas atividades">${v(item.desc)}</textarea></div>
           </div>`;
       }
       else if (type === 'edu') {
         title = 'Formação Acadêmica';
         html = `
           <div class="space-y-5">
-            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Nome do Curso <span class="text-red-500">*</span></label>
-            <input type="text" id="m_curso" value="${v(item.curso)}" class="input-premium" placeholder="Ex: Bacharelado em Administração"></div>
+            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Grau / Curso <span class="text-red-500">*</span></label>
+            <input type="text" id="m_curso" value="${v(item.curso)}" class="input-premium" placeholder="Ex: Graduação em Administração"></div>
             <div><label class="block text-sm font-semibold text-slate-700 mb-2">Instituição <span class="text-red-500">*</span></label>
-            <input type="text" id="m_inst" value="${v(item.inst)}" class="input-premium" placeholder="Ex: Universidade de São Paulo"></div>
+            <input type="text" id="m_inst" value="${v(item.inst)}" class="input-premium" placeholder="Ex: Universidade X"></div>
             <div class="grid grid-cols-2 gap-5">
-              <div><label class="block text-sm font-semibold text-slate-700 mb-2">Status</label>
-              <select id="m_status" class="input-premium">
-                <option value="Concluído" ${item.status === 'Concluído' ? 'selected' : ''}>Concluído</option>
-                <option value="Cursando" ${item.status === 'Cursando' ? 'selected' : ''}>Cursando</option>
-                <option value="Trancado" ${item.status === 'Trancado' ? 'selected' : ''}>Trancado</option>
-              </select></div>
-              <div><label class="block text-sm font-semibold text-slate-700 mb-2">Ano</label>
-              <input type="text" id="m_ano" value="${v(item.ano)}" class="input-premium" placeholder="Conclusão/Previsão"></div>
+              <div><label class="block text-sm font-semibold text-slate-700 mb-2">Ano de Início <span class="text-red-500">*</span></label>
+              <input type="text" id="m_inicio" value="${v(item.inicio)}" class="input-premium" placeholder="Ex: 2018"></div>
+              <div><label class="block text-sm font-semibold text-slate-700 mb-2">Ano de Término <span class="text-red-500">*</span></label>
+              <input type="text" id="m_ano" value="${v(item.ano)}" class="input-premium" placeholder="Ex: 2022"></div>
             </div>
           </div>`;
       }
@@ -609,10 +588,8 @@
           <div class="space-y-5">
             <div><label class="block text-sm font-semibold text-slate-700 mb-2">Nome do Curso <span class="text-red-500">*</span></label>
             <input type="text" id="m_nome" value="${v(item.nome)}" class="input-premium" placeholder="Ex: Excel Avançado"></div>
-            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Instituição</label>
-            <input type="text" id="m_inst" value="${v(item.inst)}" class="input-premium" placeholder="Ex: Udemy, SENAI"></div>
-            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Carga Horária / Ano</label>
-            <input type="text" id="m_carga" value="${v(item.carga)}" class="input-premium" placeholder="Ex: 40h (2023)"></div>
+            <div><label class="block text-sm font-semibold text-slate-700 mb-2">Descrição / Instituição</label>
+            <input type="text" id="m_inst" value="${v(item.inst)}" class="input-premium" placeholder="Ex: Udemy"></div>
           </div>`;
       }
 
@@ -622,17 +599,21 @@
 
     function saveModal() {
       let obj = {};
+      let successMsg = "Salvo com sucesso!";
+      
       if (modalType === 'exp') {
         const cargo = document.getElementById('m_cargo').value.trim();
-        if(!cargo) { showToast("Preencha os campos obrigatórios", true); return; }
+        const empresa = document.getElementById('m_empresa').value.trim();
+        if(!cargo || !empresa) { showToast("Preencha os campos obrigatórios", true); return; }
         
         obj = {
           cargo,
-          empresa: document.getElementById('m_empresa').value.trim(),
+          empresa,
           inicio: document.getElementById('m_inicio').value.trim(),
           fim: document.getElementById('m_fim').value.trim(),
           desc: document.getElementById('m_desc').value.trim()
         };
+        successMsg = "Experiência adicionada com sucesso!";
       } else if (modalType === 'edu') {
         const curso = document.getElementById('m_curso').value.trim();
         if(!curso) { showToast("Preencha os campos obrigatórios", true); return; }
@@ -640,31 +621,33 @@
         obj = {
           curso,
           inst: document.getElementById('m_inst').value.trim(),
-          status: document.getElementById('m_status').value,
+          inicio: document.getElementById('m_inicio').value.trim(),
           ano: document.getElementById('m_ano').value.trim()
         };
+        successMsg = "Formação adicionada com sucesso!";
       } else if (modalType === 'lang') {
         const idioma = document.getElementById('m_idioma').value.trim();
         if(!idioma) { showToast("Preencha os campos obrigatórios", true); return; }
         
         obj = { idioma, nivel: document.getElementById('m_nivel').value };
+        successMsg = "Idioma adicionado com sucesso!";
       } else if (modalType === 'course') {
         const nome = document.getElementById('m_nome').value.trim();
         if(!nome) { showToast("Preencha os campos obrigatórios", true); return; }
         
         obj = {
           nome,
-          inst: document.getElementById('m_inst').value.trim(),
-          carga: document.getElementById('m_carga').value.trim()
+          inst: document.getElementById('m_inst').value.trim()
         };
+        successMsg = "Curso adicionado com sucesso!";
       }
 
       if (editIndex !== null) {
         cvData[modalType][editIndex] = obj;
-        showToast("Item atualizado");
+        showToast("Item atualizado com sucesso!");
       } else {
         cvData[modalType].push(obj);
-        showToast("Item adicionado");
+        showToast(successMsg);
       }
 
       renderLists();
@@ -676,7 +659,6 @@
       const box = document.getElementById('modalBox');
       overlay.classList.remove('hidden');
       overlay.classList.add('flex');
-      // Timeout para animação
       setTimeout(() => {
         overlay.classList.remove('opacity-0');
         box.classList.remove('scale-95');
@@ -694,21 +676,151 @@
       }, 300);
     }
 
+    // --- CONSTRUÇÃO DE ESTRUTURA PARA PREVIEW/TXT/PDF ---
+    function getFormattedText() {
+      const v = (id) => document.getElementById(id).value.trim();
+      let text = `${v('f_nome')}\n`;
+      text += `${v('f_tel')}\n`;
+      text += `${v('f_email')}\n`;
+      
+      let endereco = v('f_cidade');
+      let idade = v('f_idade');
+      if (idade) {
+         let anos = idade.replace(/anos?/i, '').trim();
+         text += `${endereco} - ${anos} anos\n\n`;
+      } else {
+         text += `${endereco}\n\n`;
+      }
+
+      if (v('f_resumo')) {
+        text += `Resumo Profissional:\n`;
+        text += `${v('f_resumo')}\n\n`;
+      }
+
+      if (cvData.edu.length) {
+        text += `Formação:\n`;
+        cvData.edu.forEach(e => {
+          text += `${e.inicio || 'Início'} - ${e.ano || 'Término'} - ${e.curso}, ${e.inst}\n`;
+        });
+        text += `\n`;
+      }
+
+      if (cvData.exp.length) {
+        text += `Experiência profissional:\n`;
+        cvData.exp.forEach(e => {
+          text += `${e.empresa}\n`;
+          text += `${e.inicio || 'Mês/ano'} - ${e.fim || 'Atual'} - ${e.cargo}\n`;
+          if (e.desc) text += `${e.desc}\n`;
+          text += `\n`;
+        });
+      }
+
+      if (cvData.lang.length) {
+        text += `Idiomas:\n`;
+        cvData.lang.forEach(l => {
+          text += `${l.idioma} - ${l.nivel}\n`;
+        });
+        text += `\n`;
+      }
+
+      if (cvData.course.length) {
+        text += `Cursos\n`;
+        cvData.course.forEach(c => {
+          text += `${c.nome} - ${c.inst}\n`;
+        });
+        text += `\n`;
+      }
+
+      return text;
+    }
+
+    function getFormattedHTML() {
+      const v = (id) => document.getElementById(id).value.trim();
+      let endereco = v('f_cidade');
+      let idade = v('f_idade');
+      if (idade) {
+         let anos = idade.replace(/anos?/i, '').trim();
+         endereco += ` - ${anos} anos`;
+      }
+
+      let html = `<div style="font-family: Arial, sans-serif; font-size: 11pt; line-height: 1.6; color: #000; padding: 15px;">`;
+      
+      // Cabeçalho
+      html += `<div style="margin-bottom: 25px;">
+        <div style="font-size: 14pt; font-weight: bold; margin-bottom: 4px;">${v('f_nome') || 'Nome'}</div>
+        <div>${v('f_tel') || 'Telefone'}</div>
+        <div>${v('f_email') || 'E-mail'}</div>
+        <div>${endereco || 'Endereço'}</div>
+      </div>`;
+
+      // Resumo
+      if (v('f_resumo')) {
+        html += `<div style="margin-bottom: 20px;">
+          <div style="font-weight: bold; margin-bottom: 4px;">Resumo Profissional:</div>
+          <div style="white-space: pre-wrap;">${v('f_resumo')}</div>
+        </div>`;
+      }
+
+      // Formação
+      if (cvData.edu.length) {
+        html += `<div style="margin-bottom: 20px;">
+          <div style="font-weight: bold; margin-bottom: 4px;">Formação:</div>`;
+        cvData.edu.forEach(e => {
+          html += `<div>${e.inicio || 'Início'} - ${e.ano || 'Término'} - ${e.curso}, ${e.inst}</div>`;
+        });
+        html += `</div>`;
+      }
+
+      // Experiência
+      if (cvData.exp.length) {
+        html += `<div style="margin-bottom: 20px;">
+          <div style="font-weight: bold; margin-bottom: 4px;">Experiência profissional:</div>`;
+        cvData.exp.forEach(e => {
+          html += `<div style="margin-bottom: 12px;">
+            <div>${e.empresa}</div>
+            <div>${e.inicio || 'Mês/ano'} - ${e.fim || 'Atual'} - ${e.cargo}</div>
+            ${e.desc ? `<div style="white-space: pre-wrap;">${e.desc}</div>` : ''}
+          </div>`;
+        });
+        html += `</div>`;
+      }
+
+      // Idiomas
+      if (cvData.lang.length) {
+        html += `<div style="margin-bottom: 20px;">
+          <div style="font-weight: bold; margin-bottom: 4px;">Idiomas:</div>`;
+        cvData.lang.forEach(l => {
+          html += `<div>${l.idioma} - ${l.nivel}</div>`;
+        });
+        html += `</div>`;
+      }
+
+      // Cursos
+      if (cvData.course.length) {
+        html += `<div>
+          <div style="font-weight: bold; margin-bottom: 4px;">Cursos:</div>`;
+        cvData.course.forEach(c => {
+          html += `<div>${c.nome} - ${c.inst}</div>`;
+        });
+        html += `</div>`;
+      }
+
+      html += `</div>`;
+      return html;
+    }
+
     // --- REVISÃO E EXPORTAÇÃO ---
     function renderReview() {
       const v = (id) => document.getElementById(id).value.trim();
       const hasName = v('f_nome').length > 2;
-      const hasSummary = v('f_resumo').length > 10;
       const hasExp = cvData.exp.length > 0;
-      const hasDates = cvData.exp.every(e => e.inicio.includes('/'));
-
+      
       const checks = [
-        { label: 'Dados básicos e de contato preenchidos', ok: hasName && v('f_email').includes('@') },
-        { label: 'Resumo profissional inserido (importante para IA)', ok: hasSummary },
-        { label: 'Sem foto ou informações de documentos (RG/CPF)', ok: true },
-        { label: 'Experiências listadas com cargo e empresa', ok: hasExp },
-        { label: 'Datas das experiências no formato Mês/Ano', ok: !hasExp || hasDates },
-        { label: 'Estrutura limpa, em uma única coluna', ok: true }
+        { label: 'Dados básicos inseridos (Nome, Email, Tel)', ok: hasName && v('f_email').includes('@') },
+        { label: 'Formato de Endereço (Cidade - x anos) validado', ok: v('f_cidade').length > 0 },
+        { label: 'Estrutura das experiências com Empresa e Cargo', ok: hasExp },
+        { label: 'Datas estruturadas como (Mês/Ano - Mês/Ano)', ok: true },
+        { label: 'Currículo gerado sem duas colunas ou tabelas', ok: true }
       ];
 
       document.getElementById('checklist').innerHTML = checks.map(c => `
@@ -718,72 +830,12 @@
         </li>
       `).join('');
       
-      // Montar Mini Preview
-      let previewHtml = `<div class="font-black text-xl border-b border-slate-200 pb-3 mb-4 text-[#002f6c]">${v('f_nome') || 'SEU NOME COMPLETO'}</div>`;
-      previewHtml += `<div class="text-xs font-semibold mb-5 text-slate-500">${[v('f_email'), v('f_tel'), v('f_cidade'), v('f_linkedin')].filter(Boolean).join('  •  ')}</div>`;
-      
-      if(v('f_resumo')) {
-        previewHtml += `<div class="font-bold text-[#002f6c] text-sm uppercase mt-6 mb-2 tracking-wide">Resumo Profissional</div>`;
-        previewHtml += `<div class="text-sm leading-relaxed text-slate-700">${v('f_resumo')}</div>`;
-      }
-      if(cvData.exp.length) {
-        previewHtml += `<div class="font-bold text-[#002f6c] text-sm uppercase mt-6 mb-2 tracking-wide">Experiência Profissional</div>`;
-        cvData.exp.forEach(e => {
-          previewHtml += `<div class="mt-3 text-sm"><b class="text-slate-800">${e.cargo}</b> <span class="text-slate-400 mx-1">—</span> ${e.empresa} <br><span class="text-xs text-slate-500 mt-0.5 inline-block">${e.inicio} - ${e.fim || 'Atual'}</span></div>`;
-        });
-      }
-      document.getElementById('previewPanel').innerHTML = previewHtml;
-      
+      document.getElementById('previewPanel').innerHTML = getFormattedHTML();
       lucide.createIcons();
     }
 
     function renderExport() {
-      const v = (id) => document.getElementById(id).value.trim();
-      
-      let text = `${v('f_nome').toUpperCase()}\n`;
-      let contatos = [v('f_email'), v('f_tel'), v('f_cidade'), v('f_linkedin')].filter(Boolean).join(' | ');
-      if (contatos) text += `${contatos}\n\n`;
-
-      if (v('f_resumo')) {
-        text += `RESUMO PROFISSIONAL\n`;
-        text += `${v('f_resumo')}\n\n`;
-      }
-
-      if (cvData.exp.length) {
-        text += `EXPERIÊNCIA PROFISSIONAL\n`;
-        cvData.exp.forEach(e => {
-          text += `${e.cargo} — ${e.empresa}\n`;
-          text += `Período: ${e.inicio} até ${e.fim || 'Atualmente'}\n`;
-          if (e.desc) text += `${e.desc}\n`;
-          text += `\n`;
-        });
-      }
-
-      if (cvData.edu.length) {
-        text += `FORMAÇÃO ACADÊMICA\n`;
-        cvData.edu.forEach(e => {
-          text += `${e.curso} — ${e.inst}\n`;
-          text += `Status: ${e.status} ${e.ano ? `(${e.ano})` : ''}\n\n`;
-        });
-      }
-
-      if (cvData.lang.length) {
-        text += `IDIOMAS\n`;
-        cvData.lang.forEach(l => {
-          text += `- ${l.idioma}: ${l.nivel}\n`;
-        });
-        text += `\n`;
-      }
-
-      if (cvData.course.length) {
-        text += `CURSOS COMPLEMENTARES\n`;
-        cvData.course.forEach(c => {
-          text += `- ${c.nome} | ${c.inst} ${c.carga ? `(${c.carga})` : ''}\n`;
-        });
-        text += `\n`;
-      }
-
-      document.getElementById('exportArea').value = text;
+      document.getElementById('exportArea').value = getFormattedText();
     }
 
     function copyToClipboard() {
@@ -792,20 +844,48 @@
       
       try {
         document.execCommand('copy');
-        showToast("Currículo copiado com sucesso!");
+        showToast("Texto copiado para área de transferência!");
       } catch (err) {
-        // Fallback API
         navigator.clipboard.writeText(textarea.value).then(() => {
-          showToast("Currículo copiado com sucesso!");
-        }).catch(e => {
-          showToast("Erro ao copiar. Selecione manualmente.", true);
+          showToast("Texto copiado para área de transferência!");
         });
       }
-      
       window.getSelection().removeAllRanges();
     }
 
-    // --- UTILITÁRIOS ---
+    function downloadPDF() {
+      const element = document.createElement('div');
+      element.innerHTML = getFormattedHTML();
+      
+      // Ajustes temporários para a impressão ser preta no branco
+      element.style.background = '#ffffff';
+      element.style.color = '#000000';
+
+      const v = (id) => document.getElementById(id).value.trim();
+      let nomeArquivo = v('f_nome') || 'Curriculo';
+      nomeArquivo = nomeArquivo.replace(/\s+/g, '_');
+
+      const opt = {
+        margin:       [15, 15, 15, 15],
+        filename:     `CV_${nomeArquivo}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      showToast("Gerando seu PDF... Aguarde um momento.", false);
+      
+      html2pdf().set(opt).from(element).save().then(() => {
+        setTimeout(() => {
+          showToast("Currículo baixado com sucesso!");
+        }, 1000);
+      }).catch(err => {
+        showToast("Erro ao gerar PDF. Tente copiar o texto.", true);
+      });
+    }
+
+    // --- TOAST NOTIFICATION ---
+    let toastTimeout;
     function showToast(msg, isError = false) {
       const toast = document.getElementById('toast');
       const icon = toast.querySelector('i');
@@ -814,16 +894,21 @@
       if (isError) {
         icon.setAttribute('data-lucide', 'alert-circle');
         icon.classList.replace('text-[#1fa33a]', 'text-red-400');
+        toast.classList.replace('bg-slate-900', 'bg-red-900');
       } else {
         icon.setAttribute('data-lucide', 'check-circle-2');
         icon.classList.replace('text-red-400', 'text-[#1fa33a]');
+        toast.classList.replace('bg-red-900', 'bg-slate-900');
       }
       lucide.createIcons();
       
-      toast.classList.remove('translate-y-24', 'opacity-0');
-      setTimeout(() => {
-        toast.classList.add('translate-y-24', 'opacity-0');
-      }, 3000);
+      // Animação de entrada (desce do topo)
+      toast.classList.remove('-translate-y-32', 'opacity-0');
+      
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('-translate-y-32', 'opacity-0');
+      }, 3500); // Fica na tela por 3.5 segundos
     }
 
     function updateView() {
