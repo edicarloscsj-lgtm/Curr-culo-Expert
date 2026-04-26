@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Currículo Expert - Otimizado para Gupy</title>
+  <title>Currículo Expert - Otimizado para ATS</title>
+  <!-- Tailwind CSS versão 4 (Browser) como sugerido -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Biblioteca para gerar PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
-    body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
-    
-    /* Cores da Marca */
-    :root {
-      --brand-blue: #002f6c;
-      --brand-green: #1fa33a;
+  <style type="text/tailwindcss">
+    @theme {
+      --color-brand-blue: #002f6c;
+      --color-brand-green: #1fa33a;
     }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+    
+    body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
     
     /* Scrollbar estilizada */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -38,9 +38,12 @@
     .step-content { display: none; }
     .step-content.active { display: block; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 
-    /* Estilos Premium Inputs - Borda mais escura e visível */
+    /* Estilos Premium Inputs - Borda escura e visível com foco elegante */
     .input-premium {
       @apply w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl text-slate-800 placeholder-slate-400 focus:bg-white focus:ring-4 focus:ring-[#002f6c]/10 focus:border-[#002f6c] outline-none transition-all duration-200 shadow-sm;
+    }
+    .input-premium:disabled {
+      @apply bg-slate-100 opacity-70 cursor-not-allowed;
     }
   </style>
 </head>
@@ -74,7 +77,7 @@
         </div>
       </div>
       <div class="hidden md:flex w-full mt-3">
-        <span class="text-[10px] uppercase font-bold tracking-widest text-[#002f6c] bg-[#002f6c]/10 px-2 py-1 rounded w-max">Gupy Ready</span>
+        <span class="text-[10px] uppercase font-bold tracking-widest text-[#002f6c] bg-[#002f6c]/10 px-2 py-1 rounded w-max">ATS Ready</span>
       </div>
     </div>
 
@@ -91,18 +94,18 @@
       </div>
     </div>
 
-    <!-- Menu de Etapas (Horizontal no Mobile, Vertical no Desktop) -->
+    <!-- Menu de Etapas -->
     <nav class="flex-none md:flex-1 overflow-x-auto md:overflow-y-auto p-3 md:p-4 flex flex-row md:flex-col gap-2 md:gap-1.5 scrollbar-hide bg-slate-50 md:bg-transparent border-b md:border-b-0 border-slate-200" id="navMenu">
       <!-- Gerado via JS -->
     </nav>
 
-    <!-- Apoio Mercado Pago (Apenas Desktop para poupar espaço) -->
+    <!-- Apoio Mercado Pago -->
     <div class="hidden md:block p-4 mt-auto border-t border-slate-100 bg-white">
       <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-center shadow-sm relative overflow-hidden">
         <div class="absolute -right-4 -top-4 text-[#1fa33a]/10">
           <i data-lucide="heart" class="w-16 h-16 fill-current"></i>
         </div>
-        <p class="text-xs font-medium text-slate-600 mb-3 relative z-10">Este projeto é gratuito e sem anúncios. Se te ajudou, considere apoiar!</p>
+        <p class="text-xs font-medium text-slate-600 mb-3 relative z-10">Este projeto é gratuito. Se te ajudou, considere apoiar!</p>
         <a href="https://link.mercadopago.com.br/nrexpert" target="_blank" rel="noopener noreferrer" class="relative z-10 w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#002f6c] to-[#004299] hover:from-[#001f4c] hover:to-[#002f6c] text-white rounded-xl font-semibold shadow-md transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 text-sm outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#002f6c]">
           <i data-lucide="coffee" class="w-4 h-4"></i>
           Apoiar Projeto
@@ -143,8 +146,8 @@
               <i data-lucide="info" class="w-5 h-5"></i>
             </div>
             <div>
-              <p class="font-bold text-[#002f6c] mb-1 text-base">Dica da Gaia: Apenas o essencial.</p>
-              <p class="text-blue-900/80 leading-relaxed">A IA foca nas suas competências. Utilize um e-mail profissional e preencha sua idade (opcional) para manter o formato exato da Gupy.</p>
+              <p class="font-bold text-[#002f6c] mb-1 text-base">Dica da Inteligência Artificial:</p>
+              <p class="text-blue-900/80 leading-relaxed">A IA foca nas suas competências e palavras-chave. Utilize um e-mail profissional, mantenha seus contatos corretos e preencha a idade apenas se achar necessário.</p>
             </div>
           </div>
           
@@ -159,20 +162,27 @@
               <div>
                 <label class="block text-sm font-bold text-slate-700 mb-2">E-mail Profissional <span class="text-red-500">*</span></label>
                 <input type="email" id="f_email" oninput="updateProgress()" class="input-premium" placeholder="maria.silva@email.com">
+                <p id="emailError" class="text-red-500 text-xs font-semibold mt-1 hidden">Formato de e-mail inválido.</p>
               </div>
               <div>
                 <label class="block text-sm font-bold text-slate-700 mb-2">Celular / WhatsApp <span class="text-red-500">*</span></label>
-                <input type="tel" id="f_tel" oninput="updateProgress()" class="input-premium" placeholder="(11) 99999-9999">
+                <input type="tel" id="f_tel" oninput="maskPhone(this)" maxlength="15" class="input-premium" placeholder="(11) 99999-9999">
               </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div class="md:col-span-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
                 <label class="block text-sm font-bold text-slate-700 mb-2">Cidade e Estado <span class="text-red-500">*</span></label>
                 <input type="text" id="f_cidade" oninput="updateProgress()" class="input-premium" placeholder="Ex: São Paulo, SP">
               </div>
               <div>
                 <label class="block text-sm font-bold text-slate-700 mb-2">Idade <span class="text-slate-400 font-normal text-xs">(Opcional)</span></label>
                 <input type="text" id="f_idade" oninput="updateProgress()" class="input-premium" placeholder="Ex: 25 anos">
+              </div>
+            </div>
+            <div class="grid grid-cols-1 gap-6">
+              <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">LinkedIn ou Portfólio <span class="text-slate-400 font-normal text-xs">(Opcional)</span></label>
+                <input type="text" id="f_linkedin" oninput="updateProgress()" class="input-premium" placeholder="Ex: linkedin.com/in/seuperfil">
               </div>
             </div>
           </div>
@@ -185,17 +195,21 @@
               <i data-lucide="target" class="w-5 h-5"></i>
             </div>
             <div>
-              <p class="font-bold text-[#002f6c] mb-1 text-base">Crucial para a IA de Triagem.</p>
-              <p class="text-slate-700 leading-relaxed">O Resumo Profissional é a primeira parte analisada. Adicione as <b>palavras-chave</b> principais da sua área, seu tempo de experiência e seu foco.</p>
+              <p class="font-bold text-[#002f6c] mb-1 text-base">Sua vitrine de palavras-chave.</p>
+              <p class="text-slate-700 leading-relaxed">O Resumo Profissional deve conter as principais ferramentas e habilidades exigidas pela vaga. Mantenha entre 300 e 500 caracteres para uma leitura ideal.</p>
             </div>
           </div>
           
           <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 md:p-8">
             <label class="block text-sm font-bold text-slate-700 mb-3">Resumo / Objetivo Profissional <span class="text-red-500">*</span></label>
-            <textarea id="f_resumo" rows="6" oninput="updateProgress()" class="input-premium min-h-[150px] resize-y text-sm leading-relaxed" placeholder="Ex: Profissional com 5 anos de experiência focada em análise de métricas e atendimento estratégico. Busco posições como Analista Pleno para impulsionar a aquisição de clientes utilizando estratégias de dados."></textarea>
-            <div class="flex items-center gap-2 mt-3 text-xs text-slate-500 font-medium">
-              <i data-lucide="lightbulb" class="w-4 h-4 text-amber-500"></i>
-              Dica: Mencione o cargo que deseja ocupar e 3 a 5 habilidades chaves.
+            <textarea id="f_resumo" rows="6" oninput="updateCharCount()" class="input-premium min-h-[180px] resize-y text-sm leading-relaxed" placeholder="Ex: Profissional com 5 anos de experiência focada em análise de métricas e atendimento estratégico. Busco posições como Analista Pleno para impulsionar a aquisição de clientes utilizando estratégias de dados e metodologias ágeis."></textarea>
+            
+            <div class="flex items-center justify-between mt-3">
+              <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+                <i data-lucide="lightbulb" class="w-4 h-4 text-amber-500"></i>
+                Mencione o cargo desejado.
+              </div>
+              <div id="charCount" class="text-xs font-semibold text-slate-500">0 caracteres (Ideal: 300-500)</div>
             </div>
           </div>
         </div>
@@ -207,14 +221,14 @@
               <i data-lucide="clock" class="w-5 h-5"></i>
             </div>
             <div>
-              <p class="font-bold text-amber-900 mb-1 text-base">Atenção às Datas</p>
-              <p class="text-amber-800/80 leading-relaxed">Insira da mais recente para a mais antiga. Sempre inclua <b>Mês/Ano</b> (ex: 03/2021). Descreva as atividades focando nos resultados gerados.</p>
+              <p class="font-bold text-amber-900 mb-1 text-base">Ordenação Automática</p>
+              <p class="text-amber-800/80 leading-relaxed">O sistema ordenará automaticamente da experiência mais recente para a mais antiga. Foco na descrição em destacar conquistas e métricas alcançadas.</p>
             </div>
           </div>
           
           <div id="list_exp" class="space-y-4 mb-6"></div>
           
-          <button onclick="openModal('exp')" class="w-full border-2 border-dashed border-slate-300 rounded-2xl p-5 text-slate-600 font-semibold hover:border-[#002f6c] hover:text-[#002f6c] hover:bg-slate-50 transition-all flex items-center justify-center gap-2 bg-white">
+          <button onclick="openModal('exp')" class="w-full border-2 border-dashed border-slate-300 rounded-2xl p-5 text-slate-600 font-semibold hover:border-[#002f6c] hover:text-[#002f6c] hover:bg-slate-50 transition-all flex items-center justify-center gap-2 bg-white shadow-sm">
             <i data-lucide="plus-circle" class="w-5 h-5"></i> Adicionar Experiência
           </button>
         </div>
@@ -227,19 +241,40 @@
             </div>
             <div>
               <p class="font-bold text-[#002f6c] mb-1 text-base">Nível de Escolaridade</p>
-              <p class="text-blue-900/80 leading-relaxed">Siga o padrão sugerido preenchendo Ano de Início e o Ano de Término. Se estiver cursando, coloque a previsão de término.</p>
+              <p class="text-blue-900/80 leading-relaxed">Inclua todas as graduações, cursos técnicos e pós-graduações. Se estiver cursando, coloque o ano de previsão de término.</p>
             </div>
           </div>
           
           <div id="list_edu" class="space-y-4 mb-6"></div>
           
-          <button onclick="openModal('edu')" class="w-full border-2 border-dashed border-slate-300 rounded-2xl p-5 text-slate-600 font-semibold hover:border-[#002f6c] hover:text-[#002f6c] hover:bg-slate-50 transition-all flex items-center justify-center gap-2 bg-white">
+          <button onclick="openModal('edu')" class="w-full border-2 border-dashed border-slate-300 rounded-2xl p-5 text-slate-600 font-semibold hover:border-[#002f6c] hover:text-[#002f6c] hover:bg-slate-50 transition-all flex items-center justify-center gap-2 bg-white shadow-sm">
             <i data-lucide="plus-circle" class="w-5 h-5"></i> Adicionar Formação
           </button>
         </div>
 
         <!-- ETAPA 4: Idiomas & Cursos -->
         <div class="step-content" id="step4">
+          
+          <!-- Habilidades / Skills -->
+          <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 md:p-8 mb-6 md:mb-8">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="p-2 bg-slate-100 text-slate-700 rounded-lg shrink-0">
+                <i data-lucide="cpu" class="w-5 h-5"></i>
+              </div>
+              <h3 class="text-xl font-bold text-[#002f6c]">Habilidades (Skills)</h3>
+            </div>
+            <p class="text-sm text-slate-500 mb-6 pl-12">Principais ferramentas e conhecimentos técnicos (Tags).</p>
+            
+            <div class="flex flex-col sm:flex-row gap-3 mb-5">
+              <input type="text" id="new_skill" class="input-premium" placeholder="Ex: Excel Avançado, Python, Liderança..." onkeypress="if(event.key==='Enter') addSkill()">
+              <button onclick="addSkill()" class="shrink-0 px-6 py-3 bg-[#002f6c] text-white font-bold rounded-xl hover:bg-[#001f4c] transition-all whitespace-nowrap shadow-sm">
+                Adicionar
+              </button>
+            </div>
+            <div id="list_skills" class="flex flex-wrap gap-2"></div>
+          </div>
+
+          <!-- Idiomas -->
           <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 md:p-8 mb-6 md:mb-8">
             <div class="flex items-center gap-3 mb-6">
               <div class="p-2 bg-slate-100 text-slate-700 rounded-lg shrink-0">
@@ -253,6 +288,7 @@
             </button>
           </div>
 
+          <!-- Cursos -->
           <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 md:p-8">
             <div class="flex items-start gap-3 mb-2">
               <div class="p-2 bg-slate-100 text-slate-700 rounded-lg shrink-0">
@@ -260,7 +296,7 @@
               </div>
               <div>
                 <h3 class="text-xl font-bold text-[#002f6c]">Cursos Complementares</h3>
-                <p class="text-sm text-slate-500 mt-1">Inclua apenas cursos relevantes para a vaga desejada (Workshops, Certificações).</p>
+                <p class="text-sm text-slate-500 mt-1">Workshops e certificações relevantes.</p>
               </div>
             </div>
             <div class="mt-6">
@@ -270,6 +306,7 @@
               </button>
             </div>
           </div>
+
         </div>
 
         <!-- ETAPA 5: Revisão -->
@@ -279,7 +316,7 @@
             <div>
               <h3 class="text-xl font-bold text-[#002f6c] mb-5 flex items-center gap-2">
                 <i data-lucide="check-square" class="w-5 h-5 text-[#1fa33a]"></i>
-                Checklist Gaia
+                Checklist do Sistema
               </h3>
               <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6">
                 <ul class="space-y-4" id="checklist">
@@ -292,9 +329,9 @@
             <div>
               <h3 class="text-xl font-bold text-[#002f6c] mb-5 flex items-center gap-2">
                 <i data-lucide="search" class="w-5 h-5 text-[#002f6c]"></i>
-                Pré-visualização
+                Como a IA vai ler:
               </h3>
-              <div class="bg-white border border-slate-300 rounded-2xl p-6 text-sm text-slate-700 shadow-inner max-h-[450px] overflow-y-auto font-serif" id="previewPanel">
+              <div class="bg-white border border-slate-300 rounded-2xl p-6 md:p-8 text-sm text-slate-800 shadow-inner max-h-[500px] overflow-y-auto font-sans" id="previewPanel">
                 <!-- Gerado por JS -->
               </div>
             </div>
@@ -309,7 +346,7 @@
                 <i data-lucide="party-popper" class="w-6 h-6 text-[#1fa33a]"></i> Currículo Pronto!
               </h3>
               <p class="text-sm font-medium leading-relaxed max-w-2xl">
-                Seu currículo foi gerado com a formatação exata que as IAs de recrutamento (como a Gaia) conseguem processar melhor. Você pode <b>Baixar em PDF</b> para anexar na plataforma ou copiar o texto.
+                Seu currículo foi gerado com a formatação limpa e exata que os sistemas de recrutamento processam perfeitamente. Você pode <b>Baixar em PDF</b> ou copiar o texto para o Word.
               </p>
             </div>
             <div class="flex flex-col sm:flex-row gap-4">
@@ -317,13 +354,13 @@
                 <i data-lucide="file-down" class="w-5 h-5"></i> Baixar em PDF
               </button>
               <button onclick="copyToClipboard()" class="px-8 py-4 bg-white text-slate-700 font-bold border border-slate-300 rounded-2xl hover:bg-slate-50 transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-3 outline-none focus:ring-4 focus:ring-slate-200">
-                <i data-lucide="copy" class="w-5 h-5"></i> Copiar Texto
+                <i data-lucide="copy" class="w-5 h-5"></i> Copiar Texto Bruto
               </button>
             </div>
           </div>
 
           <div class="relative group mt-4">
-            <textarea id="exportArea" readonly class="w-full h-[500px] p-6 md:p-8 bg-white border border-slate-300 rounded-3xl text-slate-700 font-mono text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#002f6c]/20 resize-none shadow-inner"></textarea>
+            <textarea id="exportArea" readonly class="w-full h-[500px] p-6 md:p-8 bg-white border border-slate-300 rounded-3xl text-slate-800 font-mono text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#002f6c]/20 resize-none shadow-inner"></textarea>
           </div>
         </div>
 
@@ -333,7 +370,6 @@
 
   <!-- MODAL GERAL -->
   <div id="modalOverlay" class="fixed inset-0 bg-[#002f6c]/60 backdrop-blur-sm z-[80] hidden items-center justify-center opacity-0 transition-opacity duration-300">
-    <!-- Ajuste mobile: flex-col, max-h-[90vh], scroll no body -->
     <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-xl mx-4 transform scale-95 transition-transform duration-300 max-h-[90vh] flex flex-col" id="modalBox">
       <div class="px-6 py-5 md:px-8 md:py-6 border-b border-slate-100 flex justify-between items-center shrink-0">
         <h3 class="text-xl font-bold text-[#002f6c]" id="modalTitle">Adicionar</h3>
@@ -341,7 +377,6 @@
           <i data-lucide="x" class="w-6 h-6"></i>
         </button>
       </div>
-      <!-- Conteúdo com scroll e fundo branco -->
       <div class="p-6 md:p-8 overflow-y-auto flex-1 bg-white" id="modalBody">
         <!-- Form injected by JS -->
       </div>
@@ -352,7 +387,7 @@
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION (Totalmente refeito para evitar bugs de ícones) -->
+  <!-- TOAST NOTIFICATION -->
   <div id="toast" class="fixed top-4 right-4 md:top-8 md:right-8 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-x-[150%] opacity-0 transition-all duration-300 z-[9999] font-medium min-w-[280px]">
     <div id="toastIconSuccess" class="block text-[#1fa33a] shrink-0"><i data-lucide="check-circle-2" class="w-6 h-6"></i></div>
     <div id="toastIconError" class="hidden text-red-400 shrink-0"><i data-lucide="alert-circle" class="w-6 h-6"></i></div>
@@ -379,7 +414,8 @@
       exp: [],
       edu: [],
       lang: [],
-      course: []
+      course: [],
+      skills: []
     };
 
     // --- INICIALIZAÇÃO ---
@@ -387,7 +423,49 @@
       lucide.createIcons();
       buildNavMenu();
       updateView();
+      renderSkills();
     });
+
+    // --- FUNÇÕES UTILITÁRIAS ---
+    // Máscara de Telefone
+    function maskPhone(input) {
+      let v = input.value.replace(/\D/g, '');
+      if (v.length > 11) v = v.slice(0, 11);
+      if (v.length > 2) v = v.replace(/^(\d{2})(\d)/g, '($1) $2');
+      if (v.length > 9) v = v.replace(/(\d)(\d{4})$/, '$1-$2');
+      input.value = v;
+      updateProgress();
+    }
+
+    // Validação de Email por Regex
+    function isValidEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    // Contagem de Caracteres do Resumo
+    function updateCharCount() {
+      const len = document.getElementById('f_resumo').value.length;
+      const counter = document.getElementById('charCount');
+      counter.textContent = `${len} caracteres (Ideal: 300-500)`;
+      
+      if (len === 0) counter.className = "text-xs font-semibold text-slate-500";
+      else if (len < 300) counter.className = "text-xs font-semibold text-amber-500";
+      else if (len <= 500) counter.className = "text-xs font-semibold text-[#1fa33a]";
+      else counter.className = "text-xs font-semibold text-red-500";
+      
+      updateProgress();
+    }
+
+    // Ordenar Datas (Decrescente)
+    function parseDate(str) {
+      if (!str || str.toLowerCase() === 'atual') return new Date(9999, 11);
+      const parts = str.split('/');
+      if (parts.length === 2) {
+          return new Date(parseInt(parts[1]), parseInt(parts[0]) - 1);
+      }
+      return new Date(0); 
+    }
 
     // --- NAVEGAÇÃO ---
     function buildNavMenu() {
@@ -437,25 +515,36 @@
       lucide.createIcons();
       updateProgress();
       
-      // Ajusta o scroll do menu no mobile automaticamente para centralizar o botão
       newNav.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }
 
     function nextStep() { goToStep(currentStepIndex + 1); }
     function prevStep() { goToStep(currentStepIndex - 1); }
 
-    // --- PROGRESSO ---
+    // --- PROGRESSO E VALIDAÇÃO ---
     function updateProgress() {
       let filledFields = 0;
       let totalFields = 5; 
       
       const v = (id) => document.getElementById(id).value.trim();
       
-      if (v('f_nome').length > 2 && v('f_email').length > 5 && v('f_tel').length > 8 && v('f_cidade').length > 2) filledFields++;
+      const emailValido = isValidEmail(v('f_email'));
+      const emailInput = document.getElementById('f_email');
+      const emailErr = document.getElementById('emailError');
+      
+      if(v('f_email').length > 0 && !emailValido) {
+         emailInput.classList.add('border-red-400', 'focus:ring-red-200');
+         emailErr.classList.remove('hidden');
+      } else {
+         emailInput.classList.remove('border-red-400', 'focus:ring-red-200');
+         emailErr.classList.add('hidden');
+      }
+      
+      if (v('f_nome').length > 2 && emailValido && v('f_tel').length >= 14 && v('f_cidade').length > 2) filledFields++;
       if (v('f_resumo').length > 20) filledFields++;
       if (cvData.exp.length > 0) filledFields++;
       if (cvData.edu.length > 0) filledFields++;
-      if (cvData.lang.length > 0 || cvData.course.length > 0) filledFields++;
+      if (cvData.lang.length > 0 || cvData.course.length > 0 || cvData.skills.length > 0) filledFields++;
 
       const percent = Math.round((filledFields / totalFields) * 100);
       document.getElementById('progText').textContent = `${percent}%`;
@@ -464,6 +553,9 @@
 
     // --- RENDERIZADORES DE LISTA ---
     function renderLists() {
+      // Ordenação das experiências pela data de início antes de renderizar
+      cvData.exp.sort((a, b) => parseDate(b.inicio) - parseDate(a.inicio));
+
       document.getElementById('list_exp').innerHTML = cvData.exp.map((item, idx) => `
         <div class="bg-white border-2 border-slate-200 p-5 rounded-2xl shadow-sm relative group hover:border-[#002f6c]/40 hover:shadow-md transition-all">
           <div class="absolute top-4 right-4 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
@@ -516,9 +608,39 @@
     }
 
     function deleteItem(type, idx) {
-      cvData[type].splice(idx, 1);
-      renderLists();
-      showToast("Item removido da lista!", true); 
+      if(confirm("Tem certeza que deseja remover este item?")) {
+        cvData[type].splice(idx, 1);
+        renderLists();
+        showToast("Item removido com sucesso!", true); 
+      }
+    }
+
+    // --- SKILLS (HABILIDADES) ---
+    function addSkill() {
+      const input = document.getElementById('new_skill');
+      const val = input.value.trim();
+      if(val && !cvData.skills.includes(val)) {
+        cvData.skills.push(val);
+        input.value = '';
+        renderSkills();
+        updateProgress();
+      }
+    }
+    
+    function removeSkill(idx) {
+      cvData.skills.splice(idx, 1);
+      renderSkills();
+      updateProgress();
+    }
+    
+    function renderSkills() {
+      document.getElementById('list_skills').innerHTML = cvData.skills.map((s, idx) => `
+        <span class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-100 text-slate-800 border border-slate-200 rounded-xl text-sm font-semibold shadow-sm transition-all hover:bg-slate-200">
+          ${s}
+          <button onclick="removeSkill(${idx})" class="text-slate-400 hover:text-red-500 transition-colors ml-1 focus:outline-none"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>
+        </span>
+      `).join('');
+      lucide.createIcons();
     }
 
     // --- MODAIS ---
@@ -536,6 +658,18 @@
       showModalUI();
     }
 
+    // Função global para lidar com a caixa "Emprego Atual"
+    window.toggleEndDate = function(cb) {
+        const fim = document.getElementById('m_fim');
+        if(cb.checked) {
+            fim.value = 'Atual';
+            fim.disabled = true;
+        } else {
+            fim.value = '';
+            fim.disabled = false;
+        }
+    };
+
     function buildModalForm(type, item = {}) {
       const v = (val) => val || '';
       const body = document.getElementById('modalBody');
@@ -544,6 +678,7 @@
 
       if (type === 'exp') {
         title = 'Experiência Profissional';
+        const isAtual = item.fim === 'Atual';
         html = `
           <div class="space-y-5">
             <div><label class="block text-sm font-bold text-slate-700 mb-2">Empresa <span class="text-red-500">*</span></label>
@@ -553,8 +688,16 @@
             <div class="grid grid-cols-2 gap-5">
               <div><label class="block text-sm font-bold text-slate-700 mb-2">Mês/Ano Início <span class="text-red-500">*</span></label>
               <input type="text" id="m_inicio" value="${v(item.inicio)}" class="input-premium" placeholder="Ex: 03/2021"></div>
-              <div><label class="block text-sm font-bold text-slate-700 mb-2">Mês/Ano Fim</label>
-              <input type="text" id="m_fim" value="${v(item.fim)}" class="input-premium" placeholder="Em branco se atual"></div>
+              <div>
+                <div class="flex justify-between items-center mb-2">
+                  <label class="block text-sm font-bold text-slate-700">Mês/Ano Fim</label>
+                  <label class="flex items-center gap-1.5 text-xs font-bold text-[#002f6c] cursor-pointer bg-blue-50 px-2 py-1 rounded-md">
+                    <input type="checkbox" id="m_atual" onchange="toggleEndDate(this)" class="w-3.5 h-3.5 rounded" ${isAtual ? 'checked' : ''}>
+                    Emprego Atual
+                  </label>
+                </div>
+                <input type="text" id="m_fim" value="${isAtual ? 'Atual' : v(item.fim)}" class="input-premium" placeholder="Ex: 12/2023" ${isAtual ? 'disabled' : ''}>
+              </div>
             </div>
             <div><label class="block text-sm font-bold text-slate-700 mb-2">Descrição das atividades</label>
             <textarea id="m_desc" rows="6" class="input-premium min-h-[150px] resize-y text-sm leading-relaxed" placeholder="Descreva aqui suas atividades e principais resultados.">${v(item.desc)}</textarea></div>
@@ -692,6 +835,8 @@
       let text = `${v('f_nome')}\n`;
       text += `${v('f_tel')}\n`;
       text += `${v('f_email')}\n`;
+      let linkedin = v('f_linkedin');
+      if(linkedin) text += `${linkedin}\n`;
       
       let endereco = v('f_cidade');
       let idade = v('f_idade');
@@ -741,6 +886,12 @@
         text += `\n`;
       }
 
+      if (cvData.skills.length) {
+        text += `Habilidades:\n`;
+        text += `${cvData.skills.join(' • ')}\n`;
+        text += `\n`;
+      }
+
       return text;
     }
 
@@ -752,29 +903,32 @@
          let anos = idade.replace(/anos?/i, '').trim();
          endereco += ` - ${anos} anos`;
       }
+      let linkedin = v('f_linkedin');
 
-      let html = `<div style="font-family: Arial, sans-serif; font-size: 11pt; line-height: 1.6; color: #000; padding: 15px;">`;
+      // Font size aumentado para melhor leitura
+      let html = `<div style="font-family: Arial, sans-serif; font-size: 12pt; line-height: 1.6; color: #000; padding: 15px;">`;
       
       // Cabeçalho
       html += `<div style="margin-bottom: 25px;">
-        <div style="font-size: 14pt; font-weight: bold; margin-bottom: 4px;">${v('f_nome') || 'Nome'}</div>
+        <div style="font-size: 16pt; font-weight: bold; margin-bottom: 6px;">${v('f_nome') || 'Nome'}</div>
         <div>${v('f_tel') || 'Telefone'}</div>
         <div>${v('f_email') || 'E-mail'}</div>
+        ${linkedin ? `<div>${linkedin}</div>` : ''}
         <div>${endereco || 'Endereço'}</div>
       </div>`;
 
       // Resumo
       if (v('f_resumo')) {
-        html += `<div style="margin-bottom: 20px;">
-          <div style="font-weight: bold; margin-bottom: 4px;">Resumo Profissional:</div>
-          <div style="white-space: pre-wrap;">${v('f_resumo')}</div>
+        html += `<div style="margin-bottom: 25px;">
+          <div style="font-weight: bold; margin-bottom: 6px; font-size: 13pt;">Resumo Profissional:</div>
+          <div style="white-space: pre-wrap; text-align: justify;">${v('f_resumo')}</div>
         </div>`;
       }
 
       // Formação
       if (cvData.edu.length) {
-        html += `<div style="margin-bottom: 20px;">
-          <div style="font-weight: bold; margin-bottom: 4px;">Formação:</div>`;
+        html += `<div style="margin-bottom: 25px;">
+          <div style="font-weight: bold; margin-bottom: 6px; font-size: 13pt;">Formação:</div>`;
         cvData.edu.forEach(e => {
           html += `<div>${e.inicio || 'Início'} - ${e.ano || 'Término'} - ${e.curso}, ${e.inst}</div>`;
         });
@@ -783,13 +937,13 @@
 
       // Experiência
       if (cvData.exp.length) {
-        html += `<div style="margin-bottom: 20px;">
-          <div style="font-weight: bold; margin-bottom: 4px;">Experiência profissional:</div>`;
+        html += `<div style="margin-bottom: 25px;">
+          <div style="font-weight: bold; margin-bottom: 6px; font-size: 13pt;">Experiência profissional:</div>`;
         cvData.exp.forEach(e => {
-          html += `<div style="margin-bottom: 12px;">
-            <div>${e.empresa}</div>
+          html += `<div style="margin-bottom: 16px;">
+            <div style="font-weight: 600;">${e.empresa}</div>
             <div>${e.inicio || 'Mês/ano'} - ${e.fim || 'Atual'} - ${e.cargo}</div>
-            ${e.desc ? `<div style="white-space: pre-wrap;">${e.desc}</div>` : ''}
+            ${e.desc ? `<div style="white-space: pre-wrap; margin-top: 4px;">${e.desc}</div>` : ''}
           </div>`;
         });
         html += `</div>`;
@@ -797,8 +951,8 @@
 
       // Idiomas
       if (cvData.lang.length) {
-        html += `<div style="margin-bottom: 20px;">
-          <div style="font-weight: bold; margin-bottom: 4px;">Idiomas:</div>`;
+        html += `<div style="margin-bottom: 25px;">
+          <div style="font-weight: bold; margin-bottom: 6px; font-size: 13pt;">Idiomas:</div>`;
         cvData.lang.forEach(l => {
           html += `<div>${l.idioma} - ${l.nivel}</div>`;
         });
@@ -807,11 +961,19 @@
 
       // Cursos
       if (cvData.course.length) {
-        html += `<div>
-          <div style="font-weight: bold; margin-bottom: 4px;">Cursos:</div>`;
+        html += `<div style="margin-bottom: 25px;">
+          <div style="font-weight: bold; margin-bottom: 6px; font-size: 13pt;">Cursos:</div>`;
         cvData.course.forEach(c => {
           html += `<div>${c.nome} - ${c.inst}</div>`;
         });
+        html += `</div>`;
+      }
+
+      // Habilidades
+      if (cvData.skills.length) {
+        html += `<div style="margin-bottom: 25px;">
+          <div style="font-weight: bold; margin-bottom: 6px; font-size: 13pt;">Habilidades:</div>`;
+        html += `<div>${cvData.skills.join(' • ')}</div>`;
         html += `</div>`;
       }
 
@@ -826,7 +988,7 @@
       const hasExp = cvData.exp.length > 0;
       
       const checks = [
-        { label: 'Dados básicos inseridos (Nome, Email, Tel)', ok: hasName && v('f_email').includes('@') },
+        { label: 'Dados básicos inseridos (Nome, Email, Tel)', ok: hasName && isValidEmail(v('f_email')) },
         { label: 'Formato de Endereço (Cidade - x anos) validado', ok: v('f_cidade').length > 0 },
         { label: 'Estrutura das experiências com Empresa e Cargo', ok: hasExp },
         { label: 'Datas estruturadas como (Mês/Ano - Mês/Ano)', ok: true },
@@ -886,8 +1048,8 @@
       
       html2pdf().set(opt).from(element).save().then(() => {
         setTimeout(() => {
-          showToast("Currículo baixado com sucesso!");
-        }, 1000);
+          showToast("PDF gerado e baixado com sucesso!");
+        }, 1500);
       }).catch(err => {
         showToast("Erro ao gerar PDF. Tente copiar o texto.", true);
       });
@@ -919,7 +1081,7 @@
       toastTimeout = setTimeout(() => {
         toast.classList.remove('translate-x-0', 'opacity-100');
         toast.classList.add('translate-x-[150%]', 'opacity-0');
-      }, 3500); 
+      }, 4000); 
     }
 
     function updateView() {
